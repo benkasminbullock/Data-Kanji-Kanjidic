@@ -11,7 +11,7 @@ my $repo = "https://github.com/benkasminbullock/$name";
 $repo =~ s!::!-!g;
 
 WriteMakefile (
-    NAME => 'Data::Kanji::Kanjidic',
+    NAME => $name,
     VERSION_FROM => $pm,
     ABSTRACT_FROM => $pod,
     AUTHOR => 'Ben Bullock <bkb@cpan.org>',
