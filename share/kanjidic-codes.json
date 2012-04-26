@@ -1,0 +1,143 @@
+{
+    "W" : {
+        "description":"KOREAN"
+    },
+    "Y" : {
+        "description":"PINYIN"
+    },
+    "B" : {
+        "description":"BUSHU"
+    },
+    "C" : {
+        "description":"CLASSIC_RADICAL"
+    },
+    "U" : {
+        "description":"UNICODE"
+    },
+    "G" : {
+        "description":" The school grade at which the kanji is learnt. "
+    },
+    "Q" : {
+        "description":"FOUR_CORNER"
+    },
+    "S" : {
+        "type":"array",
+        "description":"STROKE_COUNT"
+    },
+    "P" : {
+        "description":"SKIP"
+    }, 
+    "J" : {
+        "description":" Japanese proficiency test level"
+    },
+    "N" : {
+        "description":"NELSON"
+    },
+    "V" : {
+        "description":"NEW_NELSON"
+    },
+    "L" : {
+        "description":"HEISIG"
+    },
+    "O" : {
+        "description":" The numbers used in P.G. O'Neill's \"Japanese Names\"."
+    },
+    "K" : {
+        "description":"GAKKEN"
+    },
+    "E" : {
+        "description":"HENSHALL"
+    },
+    "I" : {
+        "description":"SPAHN_HADAMITZKY"
+    },
+    "IN" : {
+        "description":"SH_KANJI_KANA"
+    },
+    "MP" : {
+        "description":"MOROHASHI_PAGE"
+    },
+    "MN" : {
+        "description":"MOROHASHI_INDEX"
+    },
+    "H" : {
+        "description":"HALPERN"
+    },
+    "F" : {
+        "description":"FREQUENCY"
+    },
+    "DB" : {
+        "description":" the index numbers used in \"Japanese For Busy People\" vols I-III, published by the AJLT. The codes are the volume.chapter."
+    },
+    "DC" : {
+        "description":" the index numbers used in \"The Kanji Way to Japanese Language Power\" by Dale Crowley."
+    },
+    "DF" : {
+        "description":" \"Japanese Kanji Flashcards\", by Max Hodges and Tomoko Okazaki (White Rabbit Press)."
+    },
+    "DG" : {
+        "description":" The index numbers used in the \"Kodansha Compact Kanji Guide\"."
+    },
+    "DH" : {
+        "description":" The index numbers used in the 3rd edition of \"A Guide To Reading and Writing Japanese\" edited by Ken Hensall et al."
+    },
+    "DJ" : {
+        "description":" The index numbers used in the \"Kanji in Context\" by Nishiguchi and Kono."
+    },
+    "DK" : {
+        "description":" The index numbers used by Jack Halpern in his Kanji Learners Dictionary, published by Kodansha in 1999. The numbers have been provided by Mr Halpern."
+    },
+    "DM" : {
+        "description":" French \"Remembering the kanji\""
+    },
+    "DO" : {
+        "description":"The index numbers used in P.G. O'Neill's Essential Kanji. The numbers have been provided by Glenn Rosenthal."
+    },
+
+    "DR" : {
+        "description":" These are the codes developed by Father Joseph De Roo, and published in his book \"2001 Kanji\" (Bonjinsha). Fr De Roo has given his permission for these codes to be included."
+    },
+
+    "DS" : {
+        "description":" The index numbers used in the early editions of \"A Guide To Reading and Writing Japanese\" edited by Florence Sakade."
+    },
+    "DT" : {
+        "description":" The index numbers used in the Tuttle Kanji Cards, compiled by Alexander Kask."
+    },
+    "XJ" : {
+        "description":" Cross references"
+    },
+    "ZPP" : {
+        "description":" Skip position misclassification"
+    },
+    "ZRP" : {
+        "description":" Skip Breen/Halpern disagreement"
+    },
+    "ZSP" : {
+        "description":" Skip stroke misclassification"
+    },
+    "ZBP" : {
+        "description":" Skip both misclassification"
+    },
+    "kokuji": {
+        "type": "boolean",
+        "description": "True if the character was created in Japan rather than China",
+        "url": "http://www.sljfaq.org/afaq/kokuji.html"
+    },
+    "onyomi": {
+        "type": "array",
+        "description": "A list of on'yomi or Chinese-based pronunciations",
+        "url": "http://www.sljfaq.org/afaq/kanji-pronunciation.html"
+    },
+    "kunyomi": {
+        "type": "array",
+        "description": "A list of kun'yomi or Japanese-based pronunciations",
+        "url": "http://www.sljfaq.org/afaq/kanji-pronunciation.html"
+    },
+    "line_number": {
+        "type": "number",
+        "description": "The line number of this entry in F<kanjidic>"
+    }
+}
+
+

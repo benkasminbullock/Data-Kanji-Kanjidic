@@ -1,27 +1,24 @@
-=head1 Data::Kanji::Kanjidic
+# See Kanjidic.pod for documentation
 
-Data::Kanji::Kanjidic
-
-=cut
 package Data::Kanji::Kanjidic;
 require Exporter;
 @ISA = qw(Exporter);
-@EXPORT_OK = qw/parse_kanjidic parse_entry kanji_dictionary_order
-                grade_stroke_order/;
+@EXPORT_OK = qw/parse_kanjidic
+                parse_entry
+                kanji_dictionary_order
+                grade_stroke_order
+                kanjidic_order/;
 use warnings;
 use strict;
 our $VERSION = 0.01;
-
-
 use strict;
 use warnings;
 use Encode;
 use utf8;
-#use encoding "euc-jp";
+use Carp;
+# Parse one string from kanjidic and return it in an associative array.
 
-# This is a list of the letter codes used in kanjidic, plus more
-# meaningful long names which will be used as the names of columns in
-# a database.
+#$| = 1;
 
 our %codes = 
 (
@@ -150,9 +147,11 @@ our %codes =
  'ZBP' => 'MISCLASSIFICATIONrp',
 );
 
-# Parse one string from kanjidic and return it in an associative array.
+# Fields which are allowed to have duplicates.
 
-#$| = 1;
+our %has_dupes = (
+    'XJ' => 1,
+);
 
 sub parse_entry
 {
@@ -164,6 +163,10 @@ sub parse_entry
     my @english;
     my @onyomi;
     my @kunyomi;
+    my @nanori;
+
+    # Return value
+
     my %values;
     while ($input =~ s/\{([^\}]+)\}//) {
         my $meaning = $1;
@@ -176,53 +179,84 @@ sub parse_entry
 
 # Construct a list of single-kanji counters.
 
-        elsif ($meaning =~ m/^counter for (.*)$/) {
-            if ($values{"counter"}) {
-                print "Warning: two counters in $input\n";
-            }
-            $values{"counter"} = $1;
-        } else {
+        else {
             push (@english, $meaning);
         }
     }
 
     (my $kanji, $values{"jiscode"}, my @entries) = split (" ", $input);
     $values{kanji} = $kanji;
+    # Flag to detect the start of nanori readings.
+    my $in_nanori;
     foreach my $entry (@entries) {
         my $found;
         if ($entry =~ m/(^[A-Z]+)(.*)/ ) {
+            if ($entry eq 'T1') {
+                $in_nanori = 1;
+                next;
+            }
 	    my $field = $1;
+            my $value = $2;
             if ($codes{$field}) {
-		if (!$values{$field}) {
-		    $values{$field} = $2;
-		} elsif ($field eq "S") {
-		    $values{S2} = $2;
-#		    print "$values{kanji} has two secont is $2\n";
-		}
-
+                if ($has_dupes{$field}) {
+                    push @{$values{$field}}, $value;
+                }
+                else {
+                    if (!$values{$field}) {
+                        $values{$field} = $2;
+                    }
+                    elsif ($field eq "S") {
+                        $values{S2} = $2;
+                        #		    print "$values{kanji} has two secont is $2\n";
+                    }
+                }
 		$found = 1;
+            }
+            else {
+                die "Non-duplicate field '$field' has duplicate values";
             }
 # Kanjidic contains hiragana, katakana, ".", "-" and "ー" (Japanese
 # "chouon") characters.
-	} else {
-	    my $utf8=$entry;
-#	    print "utf8: ", $utf8, "\n";
-	    if ($utf8 =~ m/^([あ-ん\.-]+)$/) {
-		push (@kunyomi, $utf8);
-		$found = 1;
-	    } elsif ($utf8 =~ m/^([ア-ンー\.-]+)$/) {
-		push (@onyomi, $utf8);
-		$found = 1;
-	    }
+	} 
+        else {
+            if ($in_nanori) {
+                push @nanori, $entry;
+                $found = 1;
+            }
+            else {
+                if ($entry =~ m/^([あ-ん\.-]+)$/) {
+                    push @kunyomi, $entry;
+                    $found = 1;
+                }
+                elsif ($entry =~ m/^([ア-ンー\.-]+)$/) {
+                    push @onyomi, $entry;
+                    $found = 1;
+                }
+            }
         }
         if (! $found) {
             warn "$.: Mystery entry \"$entry\"\n";
         }
     }
+    my %morohashi;
+    if ($values{MP}) {
+        @morohashi{qw/volume page/} = ($values{MP} =~ /(\d+)\.(\d+)/);
+    }
+    $morohashi{index} = $values{MN};
 
-    $values{"english"} = \@english;
-    $values{"onyomi"}  = \@onyomi;
-    $values{"kunyomi"} = \@kunyomi;
+    if (@english) {
+        $values{"english"} = \@english;
+    }
+    if (@onyomi) {
+        $values{"onyomi"}  = \@onyomi;
+    }
+    if (@kunyomi) {
+        $values{"kunyomi"} = \@kunyomi;
+    }
+    if (@nanori) {
+        $values{"nanori"} = \@nanori;
+    }
+    $values{morohashi} = \%morohashi;
 
 # Kanjidic uses the bogus radical numbers of Nelson rather than the
 # correct ones.
@@ -283,30 +317,106 @@ sub grade_stroke_order
 
 sub parse_kanjidic
 {
-    my ($kanjidic_ref, $file_name) = @_;
+    my ($file_name) = @_;
     my $KANJIDIC;
+
+    my %kanjidic;
+
+    if (! -f $file_name) {
+        croak "No such file '$file_name'";
+    }
 
     open $KANJIDIC, "<:encoding(euc-jp)", $file_name
         or die "Could not open '$file_name': $!";
     binmode STDOUT,"utf8";
     while (<$KANJIDIC>) {
+        # Skip the comment line.
         next if ( m/^\#/ );
         my %values = parse_entry ($_);
         my @skip = split ("-", $values{P});
         $values{skip} = \@skip;
-        $kanjidic_ref->{$values{kanji}} = \%values;
+        $kanjidic{$values{kanji}} = \%values;
     }
+    close $KANJIDIC;
+    return \%kanjidic;
+}
+
+# Return a list sorted by stroke order of the elements of
+# \%kanjidic. Also add the field "kanji_id" to each of them so that
+# the order can be reconstructed when referring to elements.
+
+sub kanjidic_order
+{
+    my ($kanjidic_ref) = @_;
+    my @kanjidic_order = 
+        sort {
+            $kanjidic_ref->{$a}->{S} <=> 
+            $kanjidic_ref->{$b}->{S} ||
+            $kanjidic_ref->{$a}->{B} <=> 
+            $kanjidic_ref->{$b}->{B}
+        }
+            keys %$kanjidic_ref;
+    my $count = 0;
+    for my $kanji (@kanjidic_order) {
+        $kanjidic_ref->{$kanji}->{kanji_id} = $count;
+        $count++;
+    }
+    return @kanjidic_order;
+}
+
+sub new
+{
+    my ($package, $file) = @_;
+    my $kanjidic = {};
+    $kanjidic->{file} = $file;
+    undef $file;
+    $kanjidic->{data} = parse_kanjidic ($kanjidic->{file});
+    bless $kanjidic;
+    return $kanjidic;
+}
+
+# Make indices going from each type of key back to the data.
+
+sub make_indices
+{
+    my ($kanjidic) = @_;
+    my %indices;
+    my $data = $kanjidic->{data};
+    for my $kanji (keys %$data) {
+        my $kdata = $data->{$kanji};
+        for my $key (keys %$kdata) {
+            $indices{$key}{$kdata->{$key}} = $kdata;
+        }
+    }
+    $kanjidic->{indices} = \%indices;
+}
+
+sub find_key
+{
+    my ($kanjidic, $key, $value) = @_;
+    if (! $kanjidic->{indices}) {
+        make_indices ($kanjidic);
+    }
+    my $index = $kanjidic->{indices}{$key};
+    return $index->{$value};
+}
+
+sub kanji_to_order
+{
+    my ($kanjidic, $kanji) = @_;
+    if (! $kanjidic->{order}) {
+        my @order = kanjidic_order ($kanjidic->{data});
+        my %index;
+        my $count = 0;
+        for my $k (@order) {
+            $index{$k} = $count;
+            $count++;
+        }
+        $kanjidic->{order} = \@order;
+        $kanjidic->{index} = \%index;
+    }
+    return $kanjidic->{index}->{$kanji};
 }
 
 1;
-
-__END__
-
-=head1 NAME
-
-Data::Kanji::Kanjidic - parse the "kanjidic" kanji data file
-
-=head1 SYNOPSIS
-
-=head1 FUNCTIONS
 

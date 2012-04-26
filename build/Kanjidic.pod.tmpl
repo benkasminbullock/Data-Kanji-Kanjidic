@@ -1,0 +1,60 @@
+=head1 NAME
+
+Data::Kanji::Kanjidic - parse the "kanjidic" kanji data file
+
+=head1 SYNOPSIS
+
+    use Data::Kanji::Kanjidic;
+
+=head1 FUNCTIONS
+
+=head2 parse_kanjidic
+
+    my $kanjidic = parse_kanjidic ('kanjidic');
+
+The input is the name of the file. The output is a hash reference. The keys of the hash reference are kanji, encoded as Unicode.
+
+This function assumes that the kanjidic file is encoded using the EUC-JP encoding.
+
+=head2 parse_entry
+
+    my %values = parse_entry ($line);
+
+Parse one line of F<kanjidic>.
+
+The possible keys and values of the returned hash are
+
+=over
+
+[% FOR key IN codes.keys.sort %]
+
+=item [% key %]
+
+[% END %]
+
+=back
+
+For detailed explanations of these codes, see L</About Kanjidic>.
+
+=head1 SEE ALSO
+
+=head2 Other Perl modules
+
+=over
+
+=item L<Lingua::JP::Kanjidic>
+
+Parses old version of F<kanjidic>.
+
+=back
+
+=head2 Kanjidic
+
+To download F<kanjidic>, visit the Monash University Nihongo FTP
+server maintained by Professor Jim Breen at
+L<ftp://ftp.edrdg.org/pub/Nihongo/00INDEX.html>.
+
+The description of kanjidic is in
+L<ftp://ftp.edrdg.org/pub/Nihongo/kanjidic.html>.
+
+[% INCLUDE "author" %]
