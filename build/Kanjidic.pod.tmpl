@@ -1,10 +1,12 @@
+=encoding UTF-8
+
 =head1 NAME
 
 Data::Kanji::Kanjidic - parse the "kanjidic" kanji data file
 
 =head1 SYNOPSIS
 
-    use Data::Kanji::Kanjidic;
+[% INCLUDE "example.pl" | indent ('    ') %]
 
 =head1 FUNCTIONS
 
@@ -12,9 +14,14 @@ Data::Kanji::Kanjidic - parse the "kanjidic" kanji data file
 
     my $kanjidic = parse_kanjidic ('kanjidic');
 
-The input is the name of the file. The output is a hash reference. The keys of the hash reference are kanji, encoded as Unicode.
+The input is the name of the file. The output is a hash reference. The
+keys of the hash reference are kanji, encoded as Unicode. The values
+of the hash reference are entries corresponding to the kanji in the
+keys. Each value represents one line of Kanjidic. Each is a hash
+reference, with the keys described in L</parse_entry>.
 
-This function assumes that the kanjidic file is encoded using the EUC-JP encoding.
+This function assumes that the kanjidic file is encoded using the
+EUC-JP encoding.
 
 =head2 parse_entry
 
@@ -22,7 +29,8 @@ This function assumes that the kanjidic file is encoded using the EUC-JP encodin
 
 Parse one line of F<kanjidic>.
 
-The possible keys and values of the returned hash are
+The possible keys and values of the returned hash are as
+follows. Values are scalars unless otherwise mentioned.
 
 =over
 
@@ -30,11 +38,85 @@ The possible keys and values of the returned hash are
 
 =item [% key %]
 
-[% END %]
+[% codes.$key %]
+
+[%- IF has_dupes.$key %]
+This may take multiple values, so the value is an array reference.
+[%- END # has dupes %]
+
+[%- IF key == 'W' %]
+[% INCLUDE "korean.pl" | indent ('    ') %]
+[%- END %]
+
+[% END # for key %]
+
+=item kokuji
+
+This has a true value (1) if the character is marked as a "kokuji" in
+Kanjidic.
+
+=item english
+
+This contains an array reference to the English-language meanings
+given in Kanjidic. It may be undefined, if there are no
+English-language meanings listed.
+
+[% INCLUDE "english-to-kanji.pl" | indent ('    ') %]
+
+=item onyomi
+
+This is an array reference which contains the I<on'yomi> (音読) of the
+kanji. It may be undefined, if no I<on'yomi> readings are listed. The
+I<on'yomi> readings are in katakana, as per Kanjidic itself. It is
+encoded in Perl's internal Unicode encoding.
+
+[% INCLUDE "onyomi-same.pl" | indent ('    ') %]
+
+=item kunyomi
+
+This is an array reference which contains the I<kun'yomi> (訓読) of
+the kanji. It may be undefined, if no I<kun'yomi> readings are
+listed. The I<kun'yomi> readings are in hiragana, as per Kanjidic
+itself. It is encoded in Perl's internal Unicode encoding.
+
+=item nanori
+
+This is an array reference which contains I<nanori> (名乗り) readings
+of the character. It may be undefined, if no I<nanori> readings are
+listed. The I<nanori> readings are in hiragana, as per Kanjidic
+itself. They are encoded in Perl's internal Unicode encoding.
+
+=item morohashi
+
+This is a hash reference containing data on the kanji's location in
+the Morohashi 'Dai Kan-Wa Jiten' kanji dictionary. The hash reference
+has the following keys.
+
+=over
+
+=item volume
+
+The volume number of the character.
+
+=item page
+
+The page number of the character.
+
+=item index
+
+The index number of the character.
 
 =back
 
-For detailed explanations of these codes, see L</About Kanjidic>.
+If there is no information, this remains unset.
+
+For example, to print all the existing values,
+
+[% INCLUDE "morohashi.pl" | indent ('    ') %]
+
+=back
+
+For detailed explanations of these codes, see L</Kanjidic>.
 
 =head1 SEE ALSO
 
@@ -44,17 +126,15 @@ For detailed explanations of these codes, see L</About Kanjidic>.
 
 =item L<Lingua::JP::Kanjidic>
 
-Parses old version of F<kanjidic>.
+This module parses an old version of F<kanjidic>.
 
 =back
 
 =head2 Kanjidic
 
-To download F<kanjidic>, visit the Monash University Nihongo FTP
-server maintained by Professor Jim Breen at
-L<ftp://ftp.edrdg.org/pub/Nihongo/00INDEX.html>.
-
-The description of kanjidic is in
-L<ftp://ftp.edrdg.org/pub/Nihongo/kanjidic.html>.
+The official description of kanjidic is in
+L<http://www.csse.monash.edu.au/~jwb/kanjidic.html>.  To download
+F<kanjidic>, please go to this web page and then download it from the
+link provided.
 
 [% INCLUDE "author" %]

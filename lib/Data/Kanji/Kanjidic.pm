@@ -7,151 +7,94 @@ require Exporter;
                 parse_entry
                 kanji_dictionary_order
                 grade_stroke_order
-                kanjidic_order/;
+                kanjidic_order
+                %codes
+                %has_dupes
+               /;
 use warnings;
 use strict;
-our $VERSION = 0.02;
+our $VERSION = 0.03;
 use strict;
 use warnings;
 use Encode;
 use utf8;
 use Carp;
+
 # Parse one string from kanjidic and return it in an associative array.
 
-#$| = 1;
+our %codes = (
+    'W' => 'Korean pronunciation',
+    'Y' => 'Pinyin pronunciation',
+    'B' => 'Bushu (radical as defined by the Nelson kanji dictionary)',
+    'C' => 'Classic radical (the usual radical)',
+    'U' => 'Unicode',
+    'G' => 'Year of elementary school',
+    'Q' => 'Four-corner code for the kanji',
+    'S' => 'Stroke count',
+    'P' => 'SKIP code', 
+    'J' => 'Japanese proficiency test level of the kanji',
+    'N' => 'Nelson code from original Nelson dictionary',
+    'V' => 'Nelson code from the "New Nelson" dictionary',
+    'L' => 'Code from "Remembering the Kanji" by James Heisig',
+    'O' => 'The numbers used in P.G. O\'Neill\'s "Japanese Names"',
+    'K' => 'The index in the Gakken Kanji Dictionary (A New Dictionary of Kanji Usage);',
+    'E' => 'The numbers used in Kenneth Henshall\'s kanji book',
+    'I' => 'The Spahn-Hadamitzky book number',
+    'IN' => 'The Spahn-Hadamitzky kanji-kana book number',
 
-our %codes = 
-(
- 'W' => 'KOREAN',
- 'Y' => 'PINYIN',
+    'MP' => 'Morohashi volume/page',
+    'MN' => 'Morohashi index number',
+    'H' => 'Number in Jack Halpern dictionary',
+    'F' => 'Frequency of kanji',
 
-# '{' => 'ENGLISH_START', 
-# '}' => 'ENGLISH_END',
-
-# Codes for kanji classification schemes.
-
- 'B' => 'BUSHU',
- 'C' => 'CLASSIC_RADICAL',
- 'U' => 'UNICODE',
-
-# The school grade at which the kanji is learnt. These need to be
-# checked.
-
- 'G' => 'GRADE',
- 'Q' => 'FOUR_CORNER',
- 'S' => 'STROKE_COUNT',
- 'P' => 'SKIP', 
-
-# Japanese proficiency test level
-
- 'J' => 'JPROF',
-
-# Codes for various books.
-
- 'N' => 'NELSON',
- 'V' => 'NEW_NELSON',
- 'L' => 'HEISIG',
-
-# The numbers used in P.G. O'Neill's "Japanese Names".
-
- 'O' => 'ONEILL',
- 'K' => 'GAKKEN',
- 'E' => 'HENSHALL',
- 'I' => 'SPAHN_HADAMITZKY',
- 'IN' => 'SH_KANJI_KANA',
-
-# 'M' => 'MOROHASHI',
-
- 'MP' => 'MOROHASHI_PAGE',
- 'MN' => 'MOROHASHI_INDEX',
- 'H' => 'HALPERN',
- 'F' => 'FREQUENCY',
-
- 'X' => 'CROSS_REF',
-
-# D-type book-specific numbers:
-
-# the index numbers used in "Japanese For Busy People" vols I-III,
-# published by the AJLT. The codes are the volume.chapter.
-
- 'DB' => 'BUSY_PEOPLE', 
-
-# the index numbers used in "The Kanji Way to Japanese Language Power"
-# by Dale Crowley.
-
- 'DC' => 'KANJI_WAY', 
-
-# "Japanese Kanji Flashcards", by Max Hodges and Tomoko Okazaki (White Rabbit Press).
-
- 'DF' => 'RABBIT',
-
-# The index numbers used in the "Kodansha Compact Kanji Guide".
-
- 'DG' => 'KODANSHA', 
-
-# The index numbers used in the 3rd edition of "A Guide To Reading and
-# Writing Japanese" edited by Ken Hensall et al.
-
- 'DH' => 'HENSHALL',
-
-# The index numbers used in the "Kanji in Context" by Nishiguchi and Kono.
-
- 'DJ' => 'KANJIINCONTEXT', 
-
-# The index numbers used by Jack Halpern in his Kanji Learners
-# Dictionary, published by Kodansha in 1999. The numbers have been
-# provided by Mr Halpern.
-
- 'DK' => 'HALPERN',
-
-# French "Remembering the kanji"
-
- 'DM' => 'FRENCHHEISIG',
-
-# The index numbers used in P.G. O'Neill's Essential Kanji. The
-# numbers have been provided by Glenn Rosenthal.
-
- 'DO' => 'ONEILL',
-
-# These are the codes developed by Father Joseph De Roo, and published
-# in his book "2001 Kanji" (Bonjinsha). Fr De Roo has given his
-# permission for these codes to be included.
-
- 'DR' => 'DEROO',
-
-# The index numbers used in the early editions of "A Guide To Reading
-# and Writing Japanese" edited by Florence Sakade.
-
- 'DS' => 'SAKADE',
-
-# The index numbers used in the Tuttle Kanji Cards, compiled by
-# Alexander Kask.
-
- 'DT' => 'KASK',
-
-# Cross references:
-
- 'XJ' => 'CROSSREF',
- 'XO' => 'CROSSREF',
- 'XH' => 'CROSSREF',
- 'XI' => 'CROSSREF',
- 'XN' => 'NELSONCROSSREF',
- 'XDR' => 'DEROOCROSSREF',
- 'T' => 'SPECIAL',
-
-# To-do: give these more meaningful names.
-
- 'ZPP' => 'MISCLASSIFICATIONpp',
- 'ZRP' => 'MISCLASSIFICATIONrp',
- 'ZSP' => 'MISCLASSIFICATIONsp',
- 'ZBP' => 'MISCLASSIFICATIONrp',
+    'X' => 'Cross reference',
+    'DB' => 'Japanese for Busy People textbook numbers', 
+    'DC' => 'The index numbers used in "The Kanji Way to Japanese Language Power" by Dale Crowley.', 
+    'DF' => '"Japanese Kanji Flashcards", by Max Hodges and Tomoko Okazaki',
+    'DG' => 'The index numbers used in the "Kodansha Compact Kanji Guide"', 
+    'DH' => 'The index numbers used in the 3rd edition of "A Guide To Reading and Writing Japanese" edited by Kenneth Hensall et al.',
+    'DJ' => 'The index numbers used in the "Kanji in Context" by Nishiguchi and Kono.', 
+    'DK' => 'The index numbers used by Jack Halpern in his Kanji Learners Dictionary',
+    'DM' => 'The index numbers from the French-language version of "Remembering the kanji"',
+    'DO' => 'The index numbers used in P.G. O\'Neill\'s Essential Kanji',
+    'DR' => 'the codes developed by Father Joseph De Roo, and published in his book "2001 Kanji" (Bonjinsha)',
+    'DS' => 'The index numbers used in the early editions of "A Guide To Reading and Writing Japanese" edited by Florence Sakade.',
+    'DT' => 'The index numbers used in the Tuttle Kanji Cards, compiled by Alexander Kask.',
+    'XJ' => 'Cross-reference.',
+    'XO' => 'Cross-reference.',
+    'XH' => 'Cross-reference.',
+    'XI' => 'Cross-reference.',
+    'XN' => 'Nelson cross-reference',
+    'XDR' => 'De Roo cross-reference',
+    'T' => 'SPECIAL',
+    'ZPP' => 'MISCLASSIFICATIONpp',
+    'ZRP' => 'MISCLASSIFICATIONrp',
+    'ZSP' => 'MISCLASSIFICATIONsp',
+    'ZBP' => 'MISCLASSIFICATIONrp',
 );
 
 # Fields which are allowed to have duplicates.
 
-our %has_dupes = (
-    'XJ' => 1,
-);
+our @dupes = qw/
+                   O
+                   Q
+                   S
+                   V
+                   W
+                   XDR
+                   XH
+                   XJ
+                   XN
+                   Y
+                   ZBP
+                   ZPP
+                   ZRP
+                   ZSP
+               /;
+
+our %has_dupes;
+
+@has_dupes{@dupes} = @dupes;
 
 sub parse_entry
 {
@@ -205,9 +148,8 @@ sub parse_entry
                     if (!$values{$field}) {
                         $values{$field} = $2;
                     }
-                    elsif ($field eq "S") {
-                        $values{S2} = $2;
-                        #		    print "$values{kanji} has two secont is $2\n";
+                    else {
+                        die "duplicate values for key $field.\n";
                     }
                 }
 		$found = 1;
@@ -242,8 +184,12 @@ sub parse_entry
     if ($values{MP}) {
         @morohashi{qw/volume page/} = ($values{MP} =~ /(\d+)\.(\d+)/);
     }
-    $morohashi{index} = $values{MN};
-
+    if ($values{MN}) {
+        $morohashi{index} = $values{MN};
+    }
+    if ($values{MN} || $values{MP}) {
+        $values{morohashi} = \%morohashi;
+    }
     if (@english) {
         $values{"english"} = \@english;
     }
@@ -256,7 +202,6 @@ sub parse_entry
     if (@nanori) {
         $values{"nanori"} = \@nanori;
     }
-    $values{morohashi} = \%morohashi;
 
 # Kanjidic uses the bogus radical numbers of Nelson rather than the
 # correct ones.
@@ -318,6 +263,9 @@ sub grade_stroke_order
 sub parse_kanjidic
 {
     my ($file_name) = @_;
+    if (! $file_name) {
+        croak "Please supply a file name";
+    }
     my $KANJIDIC;
 
     my %kanjidic;

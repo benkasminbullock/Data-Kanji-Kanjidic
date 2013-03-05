@@ -4,5 +4,6 @@ use strict;
 use Perl::Build;
 
 perl_build (
+    pre => 'build/copy-kanjidic.pl',
     make_pod => 'build/make-pod.pl',
 );

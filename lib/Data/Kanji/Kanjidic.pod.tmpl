@@ -1,0 +1,252 @@
+=head1 NAME
+
+Data::Kanji::Kanjidic - parse the "kanjidic" kanji data file
+
+=head1 SYNOPSIS
+
+    use Data::Kanji::Kanjidic;
+
+=head1 FUNCTIONS
+
+=head2 parse_kanjidic
+
+    my $kanjidic = parse_kanjidic ('kanjidic');
+
+The input is the name of the file. The output is a hash reference. The keys of the hash reference are kanji, encoded as Unicode.
+
+This function assumes that the kanjidic file is encoded using the EUC-JP encoding.
+
+=head2 parse_entry
+
+    my %values = parse_entry ($line);
+
+Parse one line of F<kanjidic>.
+
+The possible keys and values of the returned hash are
+
+=over
+
+
+
+=item B
+
+
+
+=item C
+
+
+
+=item DB
+
+
+
+=item DC
+
+
+
+=item DF
+
+
+
+=item DG
+
+
+
+=item DH
+
+
+
+=item DJ
+
+
+
+=item DK
+
+
+
+=item DM
+
+
+
+=item DO
+
+
+
+=item DR
+
+
+
+=item DS
+
+
+
+=item DT
+
+
+
+=item E
+
+
+
+=item F
+
+
+
+=item G
+
+
+
+=item H
+
+
+
+=item I
+
+
+
+=item IN
+
+
+
+=item J
+
+
+
+=item K
+
+
+
+=item L
+
+
+
+=item MN
+
+
+
+=item MP
+
+
+
+=item N
+
+
+
+=item O
+
+
+
+=item P
+
+
+
+=item Q
+
+
+
+=item S
+
+
+
+=item T
+
+
+
+=item U
+
+
+
+=item V
+
+
+
+=item W
+
+
+
+=item X
+
+
+
+=item XDR
+
+
+
+=item XH
+
+
+
+=item XI
+
+
+
+=item XJ
+
+
+
+=item XN
+
+
+
+=item XO
+
+
+
+=item Y
+
+
+
+=item ZBP
+
+
+
+=item ZPP
+
+
+
+=item ZRP
+
+
+
+=item ZSP
+
+
+
+=back
+
+For detailed explanations of these codes, see L</About Kanjidic>.
+
+=head1 SEE ALSO
+
+=head2 Other Perl modules
+
+=over
+
+=item L<Lingua::JP::Kanjidic>
+
+Parses old version of F<kanjidic>.
+
+=back
+
+=head2 Kanjidic
+
+To download F<kanjidic>, visit the Monash University Nihongo FTP
+server maintained by Professor Jim Breen at
+L<ftp://ftp.edrdg.org/pub/Nihongo/00INDEX.html>.
+
+The description of kanjidic is in
+L<ftp://ftp.edrdg.org/pub/Nihongo/kanjidic.html>.
+
+=head1 AUTHOR
+
+Ben Bullock, <bkb@cpan.org>
+
+=head1 COPYRIGHT & LICENCE
+
+This package and associated files are copyright (C) 2012 Ben Bullock.
+
+You can use, copy, modify and redistribute this package and associated
+files under the Perl Artistic Licence or the GNU General Public
+Licence.
+
+
