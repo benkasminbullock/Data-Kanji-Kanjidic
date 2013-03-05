@@ -21,4 +21,5 @@ WriteMakefile (
             bugtracker => "$repo/issues",
         },
     },
+    LICENSE => 'perl',
 );
