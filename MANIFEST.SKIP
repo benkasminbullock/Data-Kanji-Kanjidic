@@ -1,0 +1,13 @@
+build\.pl
+build/.*
+xt/.*
+share/.*
+pm_to_blib
+.*\.~.*~
+lib/Data/Kanji/Kanjidic.pod.tmpl
+blib/.*
+\.git/.*
+^Makefile$
+^MANIFEST\.bak$
+^MYMETA\.(json|yml)$
+^\.gitignore$
