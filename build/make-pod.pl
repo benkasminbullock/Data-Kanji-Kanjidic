@@ -26,8 +26,42 @@ my $tt = Template->new (
     ABSOLUTE => 1,
     INCLUDE_PATH => [$FindBin::Bin, '/home/ben/projects/Perl-Build/lib/Perl/Build/templates', "$FindBin::Bin/../examples"],
     ENCODING => 'UTF8',
+    FILTERS => {
+        xtidy => [
+            \& xtidy,
+            0,
+        ],
+    },
 );
 
 $tt->process ($input, \%vars, $output, {binmode => 'utf8'})
     or die '' . $tt->error ();
 
+exit;
+
+# This removes some obvious boilerplate from the examples, to shorten
+# the documentation, and indents it to show POD that it is code.
+
+sub xtidy
+{
+    my ($text) = @_;
+
+    # Remove shebang.
+
+    $text =~ s/^#!.*$//m;
+
+    # Remove sobvious.
+
+    $text =~ s/use\s+(strict|warnings|utf8);\s+//g;
+    $text =~ s/^binmode\s+STDOUT.*?utf8.*?\s+$//gm;
+
+    # Add indentation.
+
+    $text =~ s/^(.*)/    $1/gm;
+
+    # Change "local" form.
+
+    $text =~ s!/home/ben/data/edrdg/kanjidic!/path/to/kanjidic!;
+
+    return $text;
+}

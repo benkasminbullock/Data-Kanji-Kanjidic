@@ -6,7 +6,7 @@ Data::Kanji::Kanjidic - parse the "kanjidic" kanji data file
 
 =head1 SYNOPSIS
 
-[% INCLUDE "example.pl" | indent ('    ') %]
+[% INCLUDE "example.pl" | xtidy %]
 
 =head1 FUNCTIONS
 
@@ -34,21 +34,32 @@ follows. Values are scalars unless otherwise mentioned.
 
 =over
 
+=item kanji
+
+The kanji itself (the same as the key).
+
 [% FOR key IN codes.keys.sort %]
 
 =item [% key %]
 
-[% codes.$key %]
-
+[% codes.$key -%]
 [%- IF has_dupes.$key %]
 This may take multiple values, so the value is an array reference.
-[%- END # has dupes %]
+[%- END # has dupes -%]
 
-[%- IF key == 'W' %]
-[% INCLUDE "korean.pl" | indent ('    ') %]
-[%- END %]
+[%- IF key == 'W' %] 
 
-[% END # for key %]
+This prints a list of Korean pronunciations, romanized (requires
+L<Lingua::KO::Munja>).
+
+[% INCLUDE "korean.pl" | xtidy %]
+[%- ELSIF key == 'F' %]
+This prints a list of kanji from most frequent to least.
+
+[% INCLUDE "frequency.pl" | xtidy %]
+[%- END -%]
+
+[%- END # for key -%]
 
 =item kokuji
 
@@ -61,7 +72,7 @@ This contains an array reference to the English-language meanings
 given in Kanjidic. It may be undefined, if there are no
 English-language meanings listed.
 
-[% INCLUDE "english-to-kanji.pl" | indent ('    ') %]
+[% INCLUDE "english-to-kanji.pl" | xtidy %]
 
 =item onyomi
 
@@ -70,7 +81,9 @@ kanji. It may be undefined, if no I<on'yomi> readings are listed. The
 I<on'yomi> readings are in katakana, as per Kanjidic itself. It is
 encoded in Perl's internal Unicode encoding.
 
-[% INCLUDE "onyomi-same.pl" | indent ('    ') %]
+The following example prints a list of kanji which have the same on'yomi:
+
+[% INCLUDE "onyomi-same.pl" | xtidy %]
 
 =item kunyomi
 
@@ -112,7 +125,7 @@ If there is no information, this remains unset.
 
 For example, to print all the existing values,
 
-[% INCLUDE "morohashi.pl" | indent ('    ') %]
+[% INCLUDE "morohashi.pl" | xtidy %]
 
 =back
 

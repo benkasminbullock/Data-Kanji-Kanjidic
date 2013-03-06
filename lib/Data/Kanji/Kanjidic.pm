@@ -111,17 +111,17 @@ sub parse_entry
     # Return value
 
     my %values;
+
+    # The English-language "meanings" are between { and }.
+
     while ($input =~ s/\{([^\}]+)\}//) {
         my $meaning = $1;
 
-# Construct a list of "kokuji" (characters made in Japan).
+        # Mark as a "kokuji".
 
         if ($meaning =~ m/\(kokuji\)/) {
             $values{"kokuji"} = 1;
         }
-
-# Construct a list of single-kanji counters.
-
         else {
             push (@english, $meaning);
         }
