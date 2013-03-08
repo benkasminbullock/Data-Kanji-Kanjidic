@@ -131,6 +131,14 @@ For example, to print all the existing values,
 
 For detailed explanations of these codes, see L</Kanjidic>.
 
+=head2 kanjidic_order
+
+    kanjidic_order ($kanjidic_ref);
+
+Return a list sorted by stroke order of the elements of
+C<\%kanjidic>. Also add the field "kanji_id" to each of them so that
+the order can be reconstructed when referring to elements.
+
 =head1 SEE ALSO
 
 =head2 Other Perl modules
