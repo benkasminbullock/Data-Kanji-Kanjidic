@@ -10,10 +10,11 @@ require Exporter;
                 kanjidic_order
                 %codes
                 %has_dupes
+		grade
                /;
 use warnings;
 use strict;
-our $VERSION = 0.04;
+our $VERSION = 0.05;
 use strict;
 use warnings;
 use Encode;
@@ -360,6 +361,18 @@ sub kanji_to_order
         $kanjidic->{index} = \%index;
     }
     return $kanjidic->{index}->{$kanji};
+}
+
+sub grade
+{
+    my ($kanjidic, $grade) = @_;
+    my @grade_kanjis;
+    for my $k (keys %$kanjidic) {
+        my $kgrade = $kanjidic->{$k}->{G};
+        next unless $kgrade;
+        push @grade_kanjis, $k if $kgrade == $grade;
+    }
+    return \@grade_kanjis;
 }
 
 1;

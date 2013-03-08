@@ -139,6 +139,14 @@ Return a list sorted by stroke order of the elements of
 C<\%kanjidic>. Also add the field "kanji_id" to each of them so that
 the order can be reconstructed when referring to elements.
 
+=head2 grade
+
+    my $grade2 = grade ($kanjidic_ref, 2);
+
+Given a school grade such as C<2> above, and the return value of
+L</parse_kanjidic>, C<$kanjidic_ref>, return an array reference
+containing a list of all of the kanji from that grade.
+
 =head1 SEE ALSO
 
 =head2 Other Perl modules
