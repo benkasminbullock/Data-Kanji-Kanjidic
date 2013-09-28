@@ -11,6 +11,11 @@ my $name = 'Data::Kanji::Kanjidic';
 my $hyph = $name;
 $hyph =~ s!::!/!g;
 
+# The name, but dashed.
+
+my dash = $name;
+dash =~ s!::!-!g;
+
 # The Perl module name.
 
 my $pm = "lib/$hyph.pm";
@@ -22,7 +27,7 @@ $pod =~ s!\.pm$!.pod!;
 
 # The repository.
 
-my $repo = "https://github.com/benkasminbullock/$hyph";
+my $repo = "https://github.com/benkasminbullock/$dash";
 
 WriteMakefile (
     NAME => $name,
