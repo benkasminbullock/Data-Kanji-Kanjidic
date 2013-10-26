@@ -9,11 +9,14 @@ my $name = 'Data::Kanji::Kanjidic';
 # The name, but hyphenated.
 
 my $hyph = $name;
-$hyph =~ s!::!/!g;
+$hyph =~ s!::!-!g;
+
+my $slash = $name;
+$slash =~ s!::!/!g;
 
 # The Perl module name.
 
-my $pm = "lib/$hyph.pm";
+my $pm = "lib/$slash.pm";
 
 # The documentation file, in POD format.
 
@@ -34,6 +37,10 @@ WriteMakefile (
             repository => $repo,
             bugtracker => "$repo/issues",
         },
+    },
+    PREREQ_PM => {
+	Encode => 0,
+	Carp => 0,
     },
     LICENSE => 'perl',
 );
