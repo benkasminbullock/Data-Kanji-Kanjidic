@@ -1,0 +1,25 @@
+Revision history for perl module Data::Kanji::Kanjidic
+
+0.06 2013-11-22
+
+* Fix link to git repository.
+* Correct bad code in documentation and examples.
+* Add links to explanatory text.
+* Typo-fixes in documentation.
+
+0.05 2013-03-07
+
+* Document the "kanjidic_order" function.
+
+0.04 2013-03-05
+
+* Documentation rewrites
+* Add example programs
+
+0.03 2013-03-05
+
+* Documentation rewrites
+
+0.02 2012-04-25
+
+0.01 2012-04-25

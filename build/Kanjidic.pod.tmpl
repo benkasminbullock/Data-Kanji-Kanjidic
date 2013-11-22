@@ -14,11 +14,12 @@ Data::Kanji::Kanjidic - parse the "kanjidic" kanji data file
 
     my $kanjidic = parse_kanjidic ('kanjidic');
 
-The input is the name of the file. The output is a hash reference. The
-keys of the hash reference are kanji, encoded as Unicode. The values
-of the hash reference are entries corresponding to the kanji in the
-keys. Each value represents one line of Kanjidic. Each is a hash
-reference, with the keys described in L</parse_entry>.
+The input is the file name where Kanjidic may be found. The return
+value is a hash reference. The keys of this hash reference are kanji,
+encoded as Unicode. Each of the values of the hash reference are
+entries corresponding to the kanji in the keys. Each value represents
+one line of Kanjidic. Each is a hash reference, with the keys
+described in L</parse_entry>.
 
 This function assumes that the kanjidic file is encoded using the
 EUC-JP encoding.
@@ -27,7 +28,9 @@ EUC-JP encoding.
 
     my %values = parse_entry ($line);
 
-Parse one line of F<kanjidic>.
+Parse one line of Kanjidic. The input is one line from Kanjidic,
+encoded as Unicode. The return value is a hash containing each field
+from the line.
 
 The possible keys and values of the returned hash are as
 follows. Values are scalars unless otherwise mentioned.
@@ -42,29 +45,31 @@ The kanji itself (the same as the key).
 
 =item [% key %]
 
-[% codes.$key -%]
+[% codes.$key -%].
 [%- IF has_dupes.$key %]
 This may take multiple values, so the value is an array reference.
 [%- END # has dupes -%]
 
 [%- IF key == 'W' %] 
 
-This prints a list of Korean pronunciations, romanized (requires
-L<Lingua::KO::Munja>).
+The following example program prints a list of Korean pronunciations,
+romanized (requires L<Lingua::KO::Munja>).
 
 [% INCLUDE "korean.pl" | xtidy %]
 [%- ELSIF key == 'F' %]
-This prints a list of kanji from most frequent to least.
+
+The following example program prints a list of kanji from most to least
+frequently used.
 
 [% INCLUDE "frequency.pl" | xtidy %]
 [%- END -%]
 
-[%- END # for key -%]
+[%- END # for key %]
 
 =item kokuji
 
 This has a true value (1) if the character is marked as a "kokuji" in
-Kanjidic.
+Kanjidic. See L<http://www.sljfaq.org/afaq/kokuji.html>.
 
 =item english
 
@@ -74,10 +79,19 @@ English-language meanings listed.
 
 [% INCLUDE "english-to-kanji.pl" | xtidy %]
 
+Given input like this,
+
+[% INCLUDE "example.txt" | xtidy %]
+
+it outputs this:
+
+[% INCLUDE "example-out.txt" | xtidy %]
+
 =item onyomi
 
 This is an array reference which contains the I<on'yomi> (音読) of the
-kanji. It may be undefined, if no I<on'yomi> readings are listed. The
+kanji. (See L<http://www.sljfaq.org/afaq/kanji-pronunciation.html>.)
+It may be undefined, if no I<on'yomi> readings are listed. The
 I<on'yomi> readings are in katakana, as per Kanjidic itself. It is
 encoded in Perl's internal Unicode encoding.
 
@@ -88,9 +102,11 @@ The following example prints a list of kanji which have the same on'yomi:
 =item kunyomi
 
 This is an array reference which contains the I<kun'yomi> (訓読) of
-the kanji. It may be undefined, if no I<kun'yomi> readings are
-listed. The I<kun'yomi> readings are in hiragana, as per Kanjidic
-itself. It is encoded in Perl's internal Unicode encoding.
+the kanji. (See
+L<http://www.sljfaq.org/afaq/kanji-pronunciation.html>.) It may be
+undefined, if no I<kun'yomi> readings are listed. The I<kun'yomi>
+readings are in hiragana, as per Kanjidic itself. It is encoded in
+Perl's internal Unicode encoding.
 
 =item nanori
 

@@ -1,4 +1,4 @@
-# The following insane program converts English into kanji.
+# The following "joke" program converts English into kanji.
 
 # Call it like "english-to-kanji.pl /where/is/kanjidic english-text".
 
