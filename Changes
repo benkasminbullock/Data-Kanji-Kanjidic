@@ -1,5 +1,13 @@
 Revision history for perl module Data::Kanji::Kanjidic
 
+0.08 2013-11-23
+
+* Cleanup release
+
+0.07 2013-11-23
+
+* More examples, better documentation.
+
 0.06 2013-11-22
 
 * Fix link to git repository.
