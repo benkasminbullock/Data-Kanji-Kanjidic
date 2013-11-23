@@ -8,6 +8,7 @@ require Exporter;
                 kanji_dictionary_order
                 grade_stroke_order
                 kanjidic_order
+		stroke_radical_jis_order
                 %codes
                 %has_dupes
 		grade
@@ -231,6 +232,24 @@ sub kanji_dictionary_order
     return $strokeval if $strokeval;
     my $jisval = hex ($$valuea{jiscode}) - hex ($$valueb{jiscode});
     return $jisval if $jisval;
+    return 0;
+}
+
+# Order of kanji in a kanji dictionary.
+
+sub stroke_radical_jis_order
+{
+    my ($kanjidic_ref, $a, $b) = @_;
+    #    print "$a, $b,\n";
+    my $valuea = $kanjidic_ref->{$a};
+    my $valueb = $kanjidic_ref->{$b};
+    my $strokeval = $valuea->{S}[0] - $valueb->{S}[0];
+    return $strokeval if $strokeval;
+    my $radval = $$valuea{radical} - $$valueb{radical};
+    return $radval if $radval;
+    my $jisval = hex ($$valuea{jiscode}) - hex ($$valueb{jiscode});
+    return $jisval if $jisval;
+    # They must be the same kanji.
     return 0;
 }
 

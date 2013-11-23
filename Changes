@@ -1,5 +1,10 @@
 Revision history for perl module Data::Kanji::Kanjidic
 
+0.09
+
+* Document undocumented jiscode value
+* Add "stroke_radical_jis_order" function.
+
 0.08 2013-11-23
 
 * Cleanup release

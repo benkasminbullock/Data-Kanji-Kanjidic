@@ -11,3 +11,4 @@ blib/.*
 ^MANIFEST\.bak$
 ^MYMETA\.(json|yml)$
 ^\.gitignore$
+^Data-Kanji-Kanjidic-[\d\.]+

@@ -53,6 +53,14 @@ follows. Values are scalars unless otherwise mentioned.
 
 The kanji itself (the same as the key).
 
+=item jiscode
+
+The JIS code for the kanji in hexadecimal. This is a two-byte number
+which identifies the kanji in the JIS X 0208 encoding scheme. See
+L<http://www.sljfaq.org/afaq/encodings.html#encodings-JIS-X-0208>. The
+JIS value is the second value in Kanjidic after the kanji in encoded
+form and before the Unicode code point.
+
 [% FOR key IN codes.keys.sort %]
 
 =item [% key %]
@@ -208,6 +216,16 @@ The following example prints a list of the kanji from each school
 grade to standard output:
 
 [% INCLUDE "grades.pl" | xtidy %]
+
+=head2 stroke_radical_jis_order
+
+    @list = sort { stroke_radical_jis_order ($kanjidic, $a, $b) } @list;
+
+This is a comparison function which sorts kanji C<$a> and C<$b>
+according to stroke count, the L</S> field. If the stroke count is
+identical, it sorts them according to L</radical>. If both the stroke
+count and radical are the same, it sorts them according to
+L</jiscode>.
 
 =head1 SEE ALSO
 
