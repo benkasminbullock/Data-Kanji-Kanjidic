@@ -53,7 +53,8 @@ sub xtidy
     # Remove sobvious.
 
     $text =~ s/use\s+(strict|warnings|utf8);\s+//g;
-    $text =~ s/^binmode\s+STDOUT.*?utf8.*?\s+$//gm;
+
+    $text =~ s/binmode\s+STDOUT.*?utf8.*?\s+//;
 
     # Add indentation.
 

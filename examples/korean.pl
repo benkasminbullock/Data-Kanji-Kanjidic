@@ -1,5 +1,5 @@
 use Data::Kanji::Kanjidic 'parse_kanjidic';
-use Lingua::KO::Munja ':all'; # 강남스타일
+use Lingua::KO::Munja ':all';
 binmode STDOUT, ":utf8";
 my $kanji = parse_kanjidic ($ARGV[0]);
 for my $k (sort keys %$kanji) {

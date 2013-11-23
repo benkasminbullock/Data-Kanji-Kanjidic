@@ -1,6 +1,9 @@
 # The following "joke" program converts English into kanji.
 
-# Call it like "english-to-kanji.pl /where/is/kanjidic english-text".
+# Call it with two arguments, first the location of kanjidic, and
+# second a file of English text to "corrupt":
+#
+# ./english-to-kanji.pl /where/is/kanjidic english-text-file
 
 use Data::Kanji::Kanjidic 'parse_kanjidic';
 use Convert::Moji 'make_regex';

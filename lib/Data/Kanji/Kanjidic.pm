@@ -14,7 +14,7 @@ require Exporter;
                /;
 use warnings;
 use strict;
-our $VERSION = 0.06;
+our $VERSION = 0.07;
 use strict;
 use warnings;
 use Encode;
@@ -29,7 +29,7 @@ our %codes = (
     'B' => 'Bushu (radical as defined by the Nelson kanji dictionary)',
     'C' => 'Classic radical (the usual radical, where this is different from the Nelson radical)',
     'U' => 'Unicode code point as a hexadecimal number',
-    'G' => 'Year of elementary school',
+    'G' => 'Year of elementary school this kanji is taught',
     'Q' => 'Four-corner code',
     'S' => 'Stroke count',
     'P' => 'SKIP code', 

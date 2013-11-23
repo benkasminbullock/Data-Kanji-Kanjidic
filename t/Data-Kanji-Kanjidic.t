@@ -5,6 +5,12 @@ use Data::Kanji::Kanjidic 'parse_kanjidic';
 use FindBin;
 use utf8;
 
+binmode STDOUT, ":utf8";
+my $builder = Test::More->builder;
+binmode $builder->output,         ":utf8";
+binmode $builder->failure_output, ":utf8";
+binmode $builder->todo_output,    ":utf8";
+
 my $kanji = parse_kanjidic ("$FindBin::Bin/kanjidic-sample");
 ok ($kanji->{亜}, "Got entry for 亜");
 my $a = $kanji->{亜};

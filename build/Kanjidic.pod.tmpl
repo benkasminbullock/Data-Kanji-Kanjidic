@@ -8,11 +8,23 @@ Data::Kanji::Kanjidic - parse the "kanjidic" kanji data file
 
 [% INCLUDE "example.pl" | xtidy %]
 
+=head1 DESCRIPTION
+
+This module's basic function is to read the entire Kanjidic file into
+memory and create a data structure from it. The user then uses this
+data structure for whatever purpose. Parsing Kanjidic takes a second
+or two. Here the Kanjidic file is the as-downloaded text file in the
+old format, rather than the new-format XML file.
+
+There are several examples of the module's use in the F<examples>
+directory of the distribution, including all the code in the module's
+documentation.
+
 =head1 FUNCTIONS
 
 =head2 parse_kanjidic
 
-    my $kanjidic = parse_kanjidic ('kanjidic');
+[% INCLUDE "parse-kanjidic.pl" | xtidy %]
 
 The input is the file name where Kanjidic may be found. The return
 value is a hash reference. The keys of this hash reference are kanji,
@@ -62,9 +74,28 @@ The following example program prints a list of kanji from most to least
 frequently used.
 
 [% INCLUDE "frequency.pl" | xtidy %]
+[%- ELSIF key == 'G' %]
+
+This field is also used by kanjidic to give information on whether the
+kanji is part of the Joyo or Jinmeiyo Kanji sets. If the grade is
+between 1 and 8, the kanji is part of the Joyo Kanji. (See
+L<http://www.sljfaq.org/afaq/jouyou-kanji.html> for details of the
+Joyo Kanji.) If the grade is 9 or 10, then the kanji is not part of
+the Joyo kanji, but it is part of the Jinmeiyo Kanji. (See
+L<http://www.sljfaq.org/afaq/jinmeiyou-kanji.html>.)
+
+See also L</grade>.
+
 [%- END -%]
 
 [%- END # for key %]
+
+=item radical
+
+This is the Kangxi radical of the kanji. This overrides Kanjidic's
+preference for the Nelson radical. In other words, this is the same as
+the L</B> field for most kanji, but if a L</C> field exists, this is the value
+of the C field rather than the B field.
 
 =item kokuji
 
@@ -149,11 +180,19 @@ For detailed explanations of these codes, see L</Kanjidic>.
 
 =head2 kanjidic_order
 
-    kanjidic_order ($kanjidic_ref);
+    my @order = kanjidic_order ($kanjidic_ref);
 
-Return a list sorted by stroke order of the elements of
-C<\%kanjidic>. Also add the field "kanji_id" to each of them so that
-the order can be reconstructed when referring to elements.
+Given an input of the return value of L</parse_kanjidic>, this returns
+a list of the kanji sorted by the stroke order (the S field) of the
+elements of C<\%kanjidic>. Elements with the same stroke order are
+sorted by radical (the B field). This also adds a new field "kanji_id"
+to each of them so that the order can be reconstructed when referring
+to elements.
+
+This replicates the ordering of kanji in a kanji dictionary's index by
+stroke order. See
+L<http://www.sljfaq.org/afaq/using-a-kanji-dictionary.html> for more
+on kanji dictionary ordering.
 
 =head2 grade
 
@@ -161,7 +200,14 @@ the order can be reconstructed when referring to elements.
 
 Given a school grade such as C<2> above, and the return value of
 L</parse_kanjidic>, C<$kanjidic_ref>, return an array reference
-containing a list of all of the kanji from that grade.
+containing a list of all of the kanji from that grade. (See
+L<http://www.sljfaq.org/afaq/education.html> for details of the
+Japanese education system.)
+
+The following example prints a list of the kanji from each school
+grade to standard output:
+
+[% INCLUDE "grades.pl" | xtidy %]
 
 =head1 SEE ALSO
 
