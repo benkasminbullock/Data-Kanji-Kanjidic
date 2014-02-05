@@ -43,4 +43,5 @@ WriteMakefile (
 	Carp => 0,
     },
     LICENSE => 'perl',
+    MIN_PERL_VERSION => '5.006001',
 );

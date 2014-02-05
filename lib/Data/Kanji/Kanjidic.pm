@@ -15,7 +15,7 @@ require Exporter;
                /;
 use warnings;
 use strict;
-our $VERSION = 0.08;
+our $VERSION = '0.10';
 use strict;
 use warnings;
 use Encode;
@@ -313,10 +313,8 @@ sub kanjidic_order
     my ($kanjidic_ref) = @_;
     my @kanjidic_order = 
         sort {
-            $kanjidic_ref->{$a}->{S}->[0] <=> 
-            $kanjidic_ref->{$b}->{S}->[0] ||
-            $kanjidic_ref->{$a}->{B} <=> 
-            $kanjidic_ref->{$b}->{B}
+            hex ($kanjidic_ref->{$a}->{jiscode}) <=> 
+            hex ($kanjidic_ref->{$b}->{jiscode})
         }
             keys %$kanjidic_ref;
     my $count = 0;

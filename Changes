@@ -1,6 +1,10 @@
 Revision history for perl module Data::Kanji::Kanjidic
 
-0.09
+0.10 2013-11-29
+
+* "kanjidic_order" now sorts by JIS code ("jiscode" field).
+
+0.09 2013-11-23
 
 * Document undocumented jiscode value
 * Add "stroke_radical_jis_order" function.
