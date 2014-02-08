@@ -3,7 +3,7 @@
 package Data::Kanji::Kanjidic;
 require Exporter;
 @ISA = qw(Exporter);
-@EXPORT_OK = qw/parse_kanjidic
+our @EXPORT_OK = qw/parse_kanjidic
                 parse_entry
                 kanji_dictionary_order
                 grade_stroke_order
@@ -13,9 +13,13 @@ require Exporter;
                 %has_dupes
 		grade
                /;
+
+our %EXPORT_TAGS = (
+    all => \@EXPORT_OK,
+);
 use warnings;
 use strict;
-our $VERSION = '0.10';
+our $VERSION = '0.12';
 use strict;
 use warnings;
 use Encode;

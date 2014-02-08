@@ -1,7 +1,7 @@
 use warnings;
 use strict;
 use Test::More;
-use Data::Kanji::Kanjidic 'parse_kanjidic';
+use Data::Kanji::Kanjidic ':all';
 use FindBin;
 use utf8;
 

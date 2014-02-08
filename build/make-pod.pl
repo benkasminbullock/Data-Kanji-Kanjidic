@@ -34,8 +34,17 @@ my $tt = Template->new (
     },
 );
 
+if (-f $output) {
+    chmod 0744, $output;
+}
+
 $tt->process ($input, \%vars, $output, {binmode => 'utf8'})
     or die '' . $tt->error ();
+
+# Change the output file to read-only to prevent us wasting time
+# trying to edit it.
+
+chmod 0444, $output;
 
 exit;
 
