@@ -61,7 +61,9 @@ our %codes = (
     'DH' => 'The index numbers used in the 3rd edition of "A Guide To Reading and Writing Japanese" edited by Kenneth Hensall et al',
     'DJ' => 'The index numbers used in the "Kanji in Context" by Nishiguchi and Kono', 
     'DK' => 'The index numbers used by Jack Halpern in his Kanji Learners Dictionary',
+    'DL' => 'The index numbers used in the 2013 edition of Halpern\'s Kanji Learners Dictionary',
     'DM' => 'The index numbers from the French-language version of "Remembering the kanji"',
+    'DN' => 'The index number used in "Remembering The Kanji, 6th Edition" by James Heisig',
     'DO' => 'The index numbers used in P.G. O\'Neill\'s Essential Kanji',
     'DR' => 'The codes developed by Father Joseph De Roo, and published in his book "2001 Kanji" (Bonjinsha)',
     'DS' => 'The index numbers used in the early editions of "A Guide To Reading and Writing Japanese" edited by Florence Sakade',
@@ -160,9 +162,10 @@ sub parse_entry
                 }
 		$found = 1;
             }
-            else {
-                die "Non-duplicate field '$field' has duplicate values";
-            }
+	    else {
+		# Unknown field is ignored.
+	    }
+
 # Kanjidic contains hiragana, katakana, ".", "-" and "ー" (Japanese
 # "chouon") characters.
 	} 
