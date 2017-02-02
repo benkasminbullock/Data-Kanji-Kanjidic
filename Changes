@@ -4,6 +4,11 @@ Revision history for perl module Data::Kanji::Kanjidic
 
 * Update documentation links
 * Add the new DA field
+* Document "kanji_dictionary_order"
+* Correct documentation of "kanjidic_order"
+* Mystery entry warning relegated to author test
+* Document grade_stroke_order
+* Links to sljfaq.org tidied
 
 0.14 2014-08-18
 

@@ -2,9 +2,10 @@
 use warnings;
 use strict;
 use Template;
+use Perl::Build qw/get_info get_commit/;
 BEGIN: {
-    use FindBin;
-    use lib "$FindBin::Bin/../lib";
+    use FindBin '$Bin';
+    use lib "$Bin/../lib";
 };
 use Data::Kanji::Kanjidic qw/%codes %has_dupes/;
 use FindBin;
@@ -12,19 +13,22 @@ use FindBin;
 # Names of the input and output files containing the documentation.
 
 my $pod = 'Kanjidic.pod';
-my $input = "$FindBin::Bin/$pod.tmpl";
-my $output = "$FindBin::Bin/../lib/Data/Kanji/$pod";
-
+my $input = "$Bin/$pod.tmpl";
+my $output = "$Bin/../lib/Data/Kanji/$pod";
+my $info = get_info (base => "$Bin/..");
+my $commit = get_commit (base => "$Bin/..");
 # Template toolkit variable holder
 
 my %vars;
 
 $vars{codes} = \%codes;
 $vars{has_dupes} = \%has_dupes;
+$vars{info} = $info;
+$vars{commit} = $commit;
 
 my $tt = Template->new (
     ABSOLUTE => 1,
-    INCLUDE_PATH => [$FindBin::Bin, '/home/ben/projects/Perl-Build/lib/Perl/Build/templates', "$FindBin::Bin/../examples"],
+    INCLUDE_PATH => [$Bin, '/home/ben/projects/Perl-Build/lib/Perl/Build/templates', "$Bin/../examples"],
     ENCODING => 'UTF8',
     FILTERS => {
         xtidy => [

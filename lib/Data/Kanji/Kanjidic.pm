@@ -6,15 +6,15 @@ use warnings;
 use strict;
 our @ISA = qw(Exporter);
 our @EXPORT_OK = qw/parse_kanjidic
-                parse_entry
-                kanji_dictionary_order
-                grade_stroke_order
-                kanjidic_order
-		stroke_radical_jis_order
-                %codes
-                %has_dupes
-		grade
-               /;
+		    parse_entry
+		    kanji_dictionary_order
+		    grade_stroke_order
+		    kanjidic_order
+		    stroke_radical_jis_order
+		    %codes
+		    %has_dupes
+		    grade
+		   /;
 
 our %EXPORT_TAGS = (
     all => \@EXPORT_OK,
@@ -25,6 +25,8 @@ use warnings;
 use Encode;
 use utf8;
 use Carp;
+
+our $AUTHOR;
 
 # Parse one string from kanjidic and return it in an associative array.
 
@@ -54,7 +56,7 @@ our %codes = (
     'F' => 'Frequency of kanji',
 
     'X' => 'Cross reference',
-    'DA' => 'the index numbers used in the 2011 edition of the Kanji & Kana book, by Spahn & Hadamitzky',
+    'DA' => 'The index numbers used in the 2011 edition of the Kanji & Kana book, by Spahn & Hadamitzky',
     'DB' => 'Japanese for Busy People textbook numbers', 
     'DC' => 'The index numbers used in "The Kanji Way to Japanese Language Power" by Dale Crowley', 
     'DF' => '"Japanese Kanji Flashcards", by Max Hodges and Tomoko Okazaki',
@@ -65,7 +67,7 @@ our %codes = (
     'DL' => 'The index numbers used in the 2013 edition of Halpern\'s Kanji Learners Dictionary',
     'DM' => 'The index numbers from the French-language version of "Remembering the kanji"',
     'DN' => 'The index number used in "Remembering The Kanji, 6th Edition" by James Heisig',
-    'DP' => 'the index numbers used by Jack Halpern in his Kodansha Kanji Dictionary (2013), which is the revised version of the "New Japanese-English Kanji Dictionary" of 1990',
+    'DP' => 'The index numbers used by Jack Halpern in his Kodansha Kanji Dictionary (2013), which is the revised version of the "New Japanese-English Kanji Dictionary" of 1990',
     'DO' => 'The index numbers used in P.G. O\'Neill\'s Essential Kanji',
     'DR' => 'The codes developed by Father Joseph De Roo, and published in his book "2001 Kanji" (Bonjinsha)',
     'DS' => 'The index numbers used in the early editions of "A Guide To Reading and Writing Japanese" edited by Florence Sakade',
@@ -77,15 +79,16 @@ our %codes = (
     'XN' => 'Nelson cross-reference',
     'XDR' => 'De Roo cross-reference',
     'T' => 'SPECIAL',
-    'ZPP' => 'MISCLASSIFICATIONpp',
-    'ZRP' => 'MISCLASSIFICATIONrp',
-    'ZSP' => 'MISCLASSIFICATIONsp',
-    'ZBP' => 'MISCLASSIFICATIONrp',
+    'ZPP' => 'SKIP misclassification by position',
+    'ZRP' => 'SKIP classification disagreement',
+    'ZSP' => 'SKIP misclassification by stroke count',
+    'ZBP' => 'SKIP misclassification by both stroke count and position',
 );
 
 # Fields which are allowed to have duplicates.
 
 our @dupes = qw/
+		   DA
                    O
                    Q
                    S
@@ -187,8 +190,8 @@ sub parse_entry
                 }
             }
         }
-        if (! $found) {
-            warn "kanjidic:$.: Mystery entry \"$entry\"\n";
+        if ($AUTHOR && ! $found) {
+            die "kanjidic:$.: Mystery entry \"$entry\"\n";
         }
     }
     my %morohashi;
@@ -237,7 +240,7 @@ sub kanji_dictionary_order
     my $valueb = $kanjidic_ref->{$b};
     my $radval = $$valuea{radical} - $$valueb{radical};
     return $radval if $radval;
-    my $strokeval = $$valuea{S} - $$valueb{S};
+    my $strokeval = $valuea->{S}[0] - $valueb->{S}[0];
     return $strokeval if $strokeval;
     my $jisval = hex ($$valuea{jiscode}) - hex ($$valueb{jiscode});
     return $jisval if $jisval;

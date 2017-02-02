@@ -2,7 +2,6 @@
 use warnings;
 use strict;
 use Data::Kanji::Kanjidic 'parse_kanjidic';
-use FindBin;
 binmode STDOUT, ":utf8";
 my $kanji = parse_kanjidic ("/home/ben/data/edrdg/kanjidic");
 for my $k (sort keys %$kanji) {

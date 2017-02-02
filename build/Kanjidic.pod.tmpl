@@ -1,3 +1,11 @@
+[% start_year=2011 %]
+[% MACRO faq(page,title) BLOCK -%]
+L<[% title %]|http://www.sljfaq.org/afaq/[% page %].html>
+[%- END %]
+[% MACRO faqwhat(page,title,what) BLOCK -%]
+See L<[% title %]|http://www.sljfaq.org/afaq/[% page %].html>
+for more on [% what %].
+[%- END %]
 [% MACRO example(file) BLOCK %]
 [%- pl =  file _ ".pl" -%]
 [%- out = file _ "-out.txt" -%]
@@ -14,20 +22,22 @@ Data::Kanji::Kanjidic - parse the "kanjidic" kanji data file
 
 [% example("example") %]
 
+=head1 VERSION
+
+This documents [% info.colon %] version [% info.version %]
+corresponding to git commit L<[% commit.commit %]|[% info.repo
+%]/commit/[% commit.commit %]> released on [% commit.date %].
+
 =head1 DESCRIPTION
 
-This is a module for extracting the data from the old-format
-F<kanjidic> kanji dictionary file created by Professor Jim Breen.
+This extracts the data from the old-format F<kanjidic> kanji
+dictionary file. See L</About Kanjidic> if you are not familiar with
+this data file.
 
 This module's basic function is to read the F<kanjidic> file into
-memory and create a data structure from it. The user then uses this
-data structure for whatever purpose. Parsing Kanjidic takes a second
-or two. Here the Kanjidic file is the as-downloaded text file in the
-old format, rather than the new-format XML file.
-
-There are several examples of the module's use in the F<examples>
-directory of the distribution, including all the code in the module's
-documentation.
+memory and create a data structure from it. Parsing Kanjidic takes a
+second or two. Here the Kanjidic file is the as-downloaded text file
+in the old format, rather than the new-format XML file.
 
 =head1 FUNCTIONS
 
@@ -65,8 +75,8 @@ The kanji itself (the same as the key).
 =item jiscode
 
 The JIS code for the kanji in hexadecimal. This is a two-byte number
-which identifies the kanji in the JIS X 0208 encoding scheme. See
-L<http://www.sljfaq.org/afaq/encodings.html#encodings-JIS-X-0208>. The
+which identifies the kanji in the L<JIS X 0208 encoding
+scheme|http://www.sljfaq.org/afaq/encodings.html#encodings-JIS-X-0208>. The
 JIS value is the second value in Kanjidic after the kanji in encoded
 form and before the Unicode code point.
 
@@ -82,24 +92,23 @@ This may take multiple values, so the value is an array reference.
 [%- IF key == 'W' %] 
 
 The following example program prints a list of Korean pronunciations,
-romanized (requires L<Lingua::KO::Munja>).
+romanised. This example also requires L<Lingua::KO::Munja>.
 
-[% INCLUDE "korean.pl" | xtidy %]
+[% example("korean") %]
 [%- ELSIF key == 'F' %]
 
 The following example program prints a list of kanji from most to least
 frequently used.
 
-[% INCLUDE "frequency.pl" | xtidy %]
+[% example("frequency") %]
 [%- ELSIF key == 'G' %]
 
 This field is also used by kanjidic to give information on whether the
 kanji is part of the Joyo or Jinmeiyo Kanji sets. If the grade is
-between 1 and 8, the kanji is part of the Joyo Kanji. (See
-L<http://www.sljfaq.org/afaq/jouyou-kanji.html> for details of the
-Joyo Kanji.) If the grade is 9 or 10, then the kanji is not part of
-the Joyo kanji, but it is part of the Jinmeiyo Kanji. (See
-L<http://www.sljfaq.org/afaq/jinmeiyou-kanji.html>.)
+between 1 and 8, the kanji is part of [% faq("jouyou-kanji", "the Joyo
+Kanji") %]. If the grade is 9 or 10, then the kanji is not part of the
+Joyo kanji, but it is part of the [% faq("jinmeiyou-kanji", "Jinmeiyo
+Kanji") %].
 
 See also L</grade>.
 
@@ -111,13 +120,14 @@ See also L</grade>.
 
 This is the Kangxi radical of the kanji. This overrides Kanjidic's
 preference for the Nelson radical. In other words, this is the same as
-the L</B> field for most kanji, but if a L</C> field exists, this is the value
-of the C field rather than the B field.
+the L</B> field for most kanji, but if a L</C> field exists, this is
+the value of the C field rather than the B field.
 
 =item kokuji
 
 This has a true value (1) if the character is marked as a "kokuji" in
-Kanjidic. See L<http://www.sljfaq.org/afaq/kokuji.html>.
+Kanjidic. [% faqwhat("kokuji", "Which kanji were created in Japan?",
+"kokuji") %]
 
 =item english
 
@@ -125,7 +135,7 @@ This contains an array reference to the English-language meanings
 given in Kanjidic. It may be undefined, if there are no
 English-language meanings listed.
 
-[% INCLUDE "english-to-kanji.pl" | xtidy %]
+[% example("english-to-kanji") %]
 
 Given input like this,
 
@@ -137,11 +147,11 @@ it outputs this:
 
 =item onyomi
 
-This is an array reference which contains the
-L<on'yomi|http://www.sljfaq.org/afaq/kanji-pronunciation.html> of the
-kanji. It may be undefined, if no I<on'yomi> readings are listed. The
-I<on'yomi> readings are in katakana, as per Kanjidic itself. It is
-encoded in Perl's internal Unicode encoding.
+This is an array reference which contains the [%
+faq("kanji-pronunciation", "on'yomi") %] of the kanji. It may be
+undefined, if no I<on'yomi> readings are listed. The I<on'yomi>
+readings are in katakana, as per Kanjidic itself. It is encoded in
+Perl's internal Unicode encoding.
 
 The following example prints a list of kanji which have the same on'yomi:
 
@@ -149,19 +159,19 @@ The following example prints a list of kanji which have the same on'yomi:
 
 =item kunyomi
 
-This is an array reference which contains the I<kun'yomi> (訓読) of
-the kanji. (See
-L<http://www.sljfaq.org/afaq/kanji-pronunciation.html>.) It may be
-undefined, if no I<kun'yomi> readings are listed. The I<kun'yomi>
-readings are in hiragana, as per Kanjidic itself. It is encoded in
-Perl's internal Unicode encoding.
+This is an array reference which contains the [%
+faq("kanji-pronunciation", "kun'yomi") %].  It may be undefined, if no
+I<kun'yomi> readings are listed. The I<kun'yomi> readings are in
+hiragana, as per Kanjidic itself. It is encoded in Perl's internal
+Unicode encoding.
 
 =item nanori
 
 This is an array reference which contains I<nanori> (名乗り) readings
-of the character. It may be undefined, if no I<nanori> readings are
-listed. The I<nanori> readings are in hiragana, as per Kanjidic
-itself. They are encoded in Perl's internal Unicode encoding.
+of the character, which are readings of the kanji used in names. It
+may be undefined, if no I<nanori> readings are listed. The I<nanori>
+readings are in hiragana, as per Kanjidic itself. They are encoded in
+Perl's internal Unicode encoding.
 
 =item morohashi
 
@@ -198,34 +208,29 @@ documentation, which is linked to under L</About Kanjidic>.
 
 =head2 kanjidic_order
 
-    my @order = kanjidic_order ($kanjidic_ref);
+    my @order = kanjidic_order ($k);
 
-Given an input of the return value of L</parse_kanjidic>, this returns
-a list of the kanji sorted by the stroke order (the S field) of the
-elements of C<\%kanjidic>. Elements with the same stroke order are
-sorted by radical (the B field). This also adds a new field "kanji_id"
-to each of them so that the order can be reconstructed when referring
+This returns a list of the keys of C<$k> sorted by their JIS code
+number, which is the ordering used by the Kanjidic file itself.
+
+=head2 kanji_dictionary_order
+
+    my @sorted = sort {kanji_dictionary_order ($kanjidic_ref, $a, $b)} @kanji;
+
+This is a comparision function which puts kanji in the order they
+would be found in a Japanese kanji dictionary. Elements are sorted by
+the value of the L</radical> field, then by the first stroke count
+value (the first entry of the L</S> field) if they both have the same
+radical. Elements with the same stroke count and radical are finally
+sorted in order of their JIS code value.
+
+This also adds a new field "kanji_id" to each element of
+C<$kanjidic_ref> so that the order can be reconstructed when referring
 to elements.
 
-This replicates the ordering of kanji in a kanji dictionary's index by
-stroke order. See
-L<http://www.sljfaq.org/afaq/using-a-kanji-dictionary.html> for more
-on kanji dictionary ordering.
-
-=head2 grade
-
-    my $grade2 = grade ($kanjidic_ref, 2);
-
-Given a school grade such as C<2> above, and the return value of
-L</parse_kanjidic>, C<$kanjidic_ref>, return an array reference
-containing a list of all of the kanji from that grade. (See
-L<http://www.sljfaq.org/afaq/education.html> for details of the
-Japanese education system.)
-
-The following example prints a list of the kanji from each school
-grade to standard output:
-
-[% example("grades") %]
+[% faqwhat("using-a-kanji-dictionary", "How is a kanji dictionary
+used?", "kanji dictionary ordering") %] [% faqwhat("radicals", "What
+are kanji radicals?", "kanji radicals") %]
 
 =head2 stroke_radical_jis_order
 
@@ -236,6 +241,30 @@ according to stroke count, the L</S> field. If the stroke count is
 identical, it sorts them according to L</radical>. If both the stroke
 count and radical are the same, it sorts them according to
 L</jiscode>.
+
+=head2 grade_stroke_order
+
+This is like L</kanji_dictionary_order> and
+L</stroke_radical_jis_order>, except it sorts the kanji by school
+grade, then by stroke number, then by JIS number.
+
+This function is used to make this [% faq("grade-list","List of kanji
+by elementary school grade") %].
+
+=head2 grade
+
+    my $grade2 = grade ($kanjidic_ref, 2);
+
+Given a school grade such as C<2> above, and the return value of
+L</parse_kanjidic>, C<$kanjidic_ref>, return an array reference
+containing a list of all of the kanji from that grade. [%
+faqwhat("education", "How is Japanese writing taught to Japanese
+children?", "details of the Japanese education system") %]
+
+The following example prints a list of the kanji from each school
+grade to standard output:
+
+[% example("grades") %]
 
 =head1 SEE ALSO
 
@@ -252,11 +281,19 @@ This module parses an old version of F<kanjidic>.
 =head2 About Kanjidic
 
 Kanjidic is a product of the L<Electronic Dictionary Research and
-Development Group (EDRDG)|http://www.edrdg.org/>.
+Development Group (EDRDG)|http://www.edrdg.org/>, headed by Professor
+J.W. Breen, formerly of Monash University, Australia.
+
+Kanjidic is currently supplied in two formats, a text format with the
+kanji encoded in the EUC-JP encoding, and an XML format with the same
+kanji data encoded in Unicode. This module parses the older text
+format of kanjidic.
 
 =over
 
 =item Documentation
+
+The following links point to the documentation of Kanjidic.
 
 =over
 
@@ -268,7 +305,7 @@ Development Group (EDRDG)|http://www.edrdg.org/>.
 
 =item Download
 
-Download F<kanjidic> at one of the following sites:
+Download the F<kanjidic> file at one of the following sites:
 
 =over
 
@@ -284,5 +321,12 @@ Kanjidic's licence terms are explained at
 L<http://www.edrdg.org/edrdg/licence.html>.
 
 =back
+
+=head1 EXPORTS
+
+Nothing is exported by default. All the functions and variables
+exported by the module may be exported by using the export tag ":all":
+
+    use Data::Kanji::Kanjidic ':all';
 
 [% INCLUDE "author" %]
