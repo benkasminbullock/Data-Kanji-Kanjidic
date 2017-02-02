@@ -1,5 +1,14 @@
 Revision history for perl module Data::Kanji::Kanjidic
 
+0.15 2017-02-02
+
+* Update documentation links
+* Add the new DA field
+
+0.14 2014-08-18
+
+* Document the new DP field
+
 0.13 2014-06-04
 
 * Don't die on encountering unknown fields

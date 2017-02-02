@@ -2,7 +2,9 @@
 
 package Data::Kanji::Kanjidic;
 require Exporter;
-@ISA = qw(Exporter);
+use warnings;
+use strict;
+our @ISA = qw(Exporter);
 our @EXPORT_OK = qw/parse_kanjidic
                 parse_entry
                 kanji_dictionary_order
@@ -17,9 +19,7 @@ our @EXPORT_OK = qw/parse_kanjidic
 our %EXPORT_TAGS = (
     all => \@EXPORT_OK,
 );
-use warnings;
-use strict;
-our $VERSION = '0.12';
+our $VERSION = '0.15';
 use strict;
 use warnings;
 use Encode;
@@ -54,6 +54,7 @@ our %codes = (
     'F' => 'Frequency of kanji',
 
     'X' => 'Cross reference',
+    'DA' => 'the index numbers used in the 2011 edition of the Kanji & Kana book, by Spahn & Hadamitzky',
     'DB' => 'Japanese for Busy People textbook numbers', 
     'DC' => 'The index numbers used in "The Kanji Way to Japanese Language Power" by Dale Crowley', 
     'DF' => '"Japanese Kanji Flashcards", by Max Hodges and Tomoko Okazaki',
@@ -64,6 +65,7 @@ our %codes = (
     'DL' => 'The index numbers used in the 2013 edition of Halpern\'s Kanji Learners Dictionary',
     'DM' => 'The index numbers from the French-language version of "Remembering the kanji"',
     'DN' => 'The index number used in "Remembering The Kanji, 6th Edition" by James Heisig',
+    'DP' => 'the index numbers used by Jack Halpern in his Kodansha Kanji Dictionary (2013), which is the revised version of the "New Japanese-English Kanji Dictionary" of 1990',
     'DO' => 'The index numbers used in P.G. O\'Neill\'s Essential Kanji',
     'DR' => 'The codes developed by Father Joseph De Roo, and published in his book "2001 Kanji" (Bonjinsha)',
     'DS' => 'The index numbers used in the early editions of "A Guide To Reading and Writing Japanese" edited by Florence Sakade',
@@ -186,7 +188,7 @@ sub parse_entry
             }
         }
         if (! $found) {
-            warn "$.: Mystery entry \"$entry\"\n";
+            warn "kanjidic:$.: Mystery entry \"$entry\"\n";
         }
     }
     my %morohashi;
@@ -212,14 +214,14 @@ sub parse_entry
         $values{"nanori"} = \@nanori;
     }
 
-# Kanjidic uses the bogus radical numbers of Nelson rather than the
-# correct ones.
+    # Kanjidic uses the bogus radical numbers of Nelson rather than
+    # the correct ones.
 
     $values{radical} = $values{B};
     $values{radical} = $values{C} if $values{C};
 
-# Just in case there is a problem in kanjidic, this will tell us the
-# line where the problem was:
+    # Just in case there is a problem in kanjidic, this will tell us
+    # the line where the problem was:
 
     $values{"line_number"} = $.;
     return %values;
@@ -277,7 +279,8 @@ sub grade_stroke_order
         else {
             return -1;
         }
-    } elsif ($valueb->{G}) {
+    }
+    elsif ($valueb->{G}) {
         return 1;
     }
     my $strokeval = $$valuea{S} - $$valueb{S};

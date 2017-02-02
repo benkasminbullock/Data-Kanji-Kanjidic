@@ -1,3 +1,9 @@
+[% MACRO example(file) BLOCK %]
+[%- pl =  file _ ".pl" -%]
+[%- out = file _ "-out.txt" -%]
+[% INCLUDE $pl | xtidy %]
+(This example is included as L<F<[% pl %]>|https://api.metacpan.org/source/BKB/[% info.name %]-[% info.version %]/examples/[% pl %]> in the distribution.)
+[% END %]
 =encoding UTF-8
 
 =head1 NAME
@@ -6,7 +12,7 @@ Data::Kanji::Kanjidic - parse the "kanjidic" kanji data file
 
 =head1 SYNOPSIS
 
-[% INCLUDE "example.pl" | xtidy %]
+[% example("example") %]
 
 =head1 DESCRIPTION
 
@@ -27,7 +33,7 @@ documentation.
 
 =head2 parse_kanjidic
 
-[% INCLUDE "parse-kanjidic.pl" | xtidy %]
+[% example("parse-kanjidic") %]
 
 The input is the file name where Kanjidic may be found. The return
 value is a hash reference. The keys of this hash reference are kanji,
@@ -131,15 +137,15 @@ it outputs this:
 
 =item onyomi
 
-This is an array reference which contains the I<on'yomi> (音読) of the
-kanji. (See L<http://www.sljfaq.org/afaq/kanji-pronunciation.html>.)
-It may be undefined, if no I<on'yomi> readings are listed. The
+This is an array reference which contains the
+L<on'yomi|http://www.sljfaq.org/afaq/kanji-pronunciation.html> of the
+kanji. It may be undefined, if no I<on'yomi> readings are listed. The
 I<on'yomi> readings are in katakana, as per Kanjidic itself. It is
 encoded in Perl's internal Unicode encoding.
 
 The following example prints a list of kanji which have the same on'yomi:
 
-[% INCLUDE "onyomi-same.pl" | xtidy %]
+[% example("onyomi-same") %]
 
 =item kunyomi
 
@@ -183,11 +189,12 @@ If there is no information, this remains unset.
 
 For example, to print all the existing values,
 
-[% INCLUDE "morohashi.pl" | xtidy %]
+[% example("morohashi") %]
 
 =back
 
-For detailed explanations of these codes, see L</Kanjidic>.
+For detailed explanations of these codes, see the kanjidic
+documentation, which is linked to under L</About Kanjidic>.
 
 =head2 kanjidic_order
 
@@ -218,7 +225,7 @@ Japanese education system.)
 The following example prints a list of the kanji from each school
 grade to standard output:
 
-[% INCLUDE "grades.pl" | xtidy %]
+[% example("grades") %]
 
 =head2 stroke_radical_jis_order
 
@@ -242,11 +249,40 @@ This module parses an old version of F<kanjidic>.
 
 =back
 
-=head2 Kanjidic
+=head2 About Kanjidic
 
-The official description of kanjidic is in
-L<http://www.csse.monash.edu.au/~jwb/kanjidic.html>.  To download
-F<kanjidic>, please go to this web page and then download it from the
-link provided.
+Kanjidic is a product of the L<Electronic Dictionary Research and
+Development Group (EDRDG)|http://www.edrdg.org/>.
+
+=over
+
+=item Documentation
+
+=over
+
+=item L<Summary description of kanjidic|http://www.edrdg.org/kanjidic/kanjidic.html>
+
+=item L<Full documentation|http://www.edrdg.org/kanjidic/kanjidic_doc.html>
+
+=back
+
+=item Download
+
+Download F<kanjidic> at one of the following sites:
+
+=over
+
+=item L<ftp://ftp.edrdg.org/pub/Nihongo/00INDEX.html>
+
+=item L<http://ftp.monash.edu.au/pub/nihongo/00INDEX.html>
+
+=back
+
+=item Licence
+
+Kanjidic's licence terms are explained at
+L<http://www.edrdg.org/edrdg/licence.html>.
+
+=back
 
 [% INCLUDE "author" %]

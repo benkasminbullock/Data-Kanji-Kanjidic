@@ -2,30 +2,10 @@ use strict;
 use warnings;
 use ExtUtils::MakeMaker;
 
-# The name of the distribution.
-
 my $name = 'Data::Kanji::Kanjidic';
-
-# The name, but hyphenated.
-
-my $hyph = $name;
-$hyph =~ s!::!-!g;
-
-my $slash = $name;
-$slash =~ s!::!/!g;
-
-# The Perl module name.
-
-my $pm = "lib/$slash.pm";
-
-# The documentation file, in POD format.
-
-my $pod = $pm;
-$pod =~ s!\.pm$!.pod!;
-
-# The repository.
-
-my $repo = "https://github.com/benkasminbullock/$hyph";
+my $pm = "lib/Data/Kanji/Kanjidic.pm";
+my $pod = "lib/Data/Kanji/Kanjidic.pod";
+my $repo = "https://github.com/benkasminbullock/Data-Kanji-Kanjidic";
 
 WriteMakefile (
     NAME => $name,

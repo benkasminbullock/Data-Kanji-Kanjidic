@@ -35,7 +35,7 @@ my $tt = Template->new (
 );
 
 if (-f $output) {
-    chmod 0744, $output;
+    chmod 0644, $output;
 }
 
 $tt->process ($input, \%vars, $output, {binmode => 'utf8'})

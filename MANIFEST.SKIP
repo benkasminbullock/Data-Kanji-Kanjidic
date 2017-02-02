@@ -12,3 +12,4 @@ blib/.*
 ^MYMETA\.(json|yml)$
 ^\.gitignore$
 ^Data-Kanji-Kanjidic-[\d\.]+
+^examples/.*-out\.txt$
