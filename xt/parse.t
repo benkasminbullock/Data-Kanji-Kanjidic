@@ -2,6 +2,7 @@ use warnings;
 use strict;
 use Data::Kanji::Kanjidic 'parse_kanjidic';
 use utf8;
+use Test::More;
 binmode STDOUT, ":encoding(utf8)";
 my %codes = %Data::Kanji::Kanjidic::codes;
 my $kfile = '/home/ben/data/edrdg/kanjidic';
