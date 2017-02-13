@@ -1,12 +1,12 @@
 #!/home/ben/software/install/bin/perl
 use warnings;
 use strict;
-use FindBin;
+use FindBin '$Bin';
 use Deploy 'older';
 
 my $max_lines = 20;
 my $infile = '/home/ben/data/edrdg/kanjidic';
-my $outfile = "$FindBin::Bin/../t/kanjidic-sample";
+my $outfile = "$Bin/../t/kanjidic-sample";
 
 if (older ($outfile, $infile)) {
     print "$outfile is older than $infile.\n";

@@ -8,7 +8,6 @@ BEGIN: {
     use lib "$Bin/../lib";
 };
 use Data::Kanji::Kanjidic qw/%codes %has_dupes/;
-use FindBin;
 
 # Names of the input and output files containing the documentation.
 
