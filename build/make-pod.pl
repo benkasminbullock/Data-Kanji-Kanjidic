@@ -3,6 +3,7 @@ use warnings;
 use strict;
 use Template;
 use Perl::Build qw/get_info get_commit/;
+use Perl::Build::Pod ':all';
 BEGIN: {
     use FindBin '$Bin';
     use lib "$Bin/../lib";
@@ -27,7 +28,7 @@ $vars{commit} = $commit;
 
 my $tt = Template->new (
     ABSOLUTE => 1,
-    INCLUDE_PATH => [$Bin, '/home/ben/projects/Perl-Build/lib/Perl/Build/templates', "$Bin/../examples"],
+    INCLUDE_PATH => [$Bin, pbtmpl (), "$Bin/../examples"],
     ENCODING => 'UTF8',
     FILTERS => {
         xtidy => [
@@ -51,30 +52,3 @@ chmod 0444, $output;
 
 exit;
 
-# This removes some obvious boilerplate from the examples, to shorten
-# the documentation, and indents it to show POD that it is code.
-
-sub xtidy
-{
-    my ($text) = @_;
-
-    # Remove shebang.
-
-    $text =~ s/^#!.*$//m;
-
-    # Remove sobvious.
-
-    $text =~ s/use\s+(strict|warnings|utf8);\s+//g;
-
-    $text =~ s/binmode\s+STDOUT.*?utf8.*?\s+//;
-
-    # Add indentation.
-
-    $text =~ s/^(.*)/    $1/gm;
-
-    # Change "local" form.
-
-    $text =~ s!/home/ben/data/edrdg/kanjidic!/path/to/kanjidic!;
-
-    return $text;
-}
