@@ -115,7 +115,6 @@ sub parse_entry
 
 # Remove the English entries first.
 
-    my $counter;
     my @english;
     my @onyomi;
     my @kunyomi;
