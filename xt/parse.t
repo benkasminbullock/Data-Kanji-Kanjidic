@@ -12,4 +12,7 @@ eval {
     $k = parse_kanjidic ($kfile);
 };
 ok (! $@, "no errors parsing $kfile");
+if ($@) {
+    note ($@);
+}
 done_testing ();

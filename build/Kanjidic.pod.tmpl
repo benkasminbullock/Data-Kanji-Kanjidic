@@ -1,9 +1,9 @@
 [% start_year=2011 %]
 [% MACRO faq(page,title) BLOCK -%]
-L<[% title %]|http://www.sljfaq.org/afaq/[% page %].html>
+L<[% title %]|https://www.sljfaq.org/afaq/[% page %].html>
 [%- END %]
 [% MACRO faqwhat(page,title,what) BLOCK -%]
-See L<[% title %]|http://www.sljfaq.org/afaq/[% page %].html>
+See L<[% title %]|https://www.sljfaq.org/afaq/[% page %].html>
 for more on [% what %].
 [%- END %]
 [% MACRO example(file) BLOCK %]
@@ -41,19 +41,55 @@ in the old format, rather than the new-format XML file.
 
 =head1 FUNCTIONS
 
-=head2 parse_kanjidic
+=head2 grade
 
-[% example("parse-kanjidic") %]
+    my $grade2 = grade ($kanjidic_ref, 2);
 
-The input is the file name where Kanjidic may be found. The return
-value is a hash reference. The keys of this hash reference are kanji,
-encoded as Unicode. Each of the values of the hash reference are
-entries corresponding to the kanji in the keys. Each value represents
-one line of Kanjidic. Each is a hash reference, with the keys
-described in L</parse_entry>.
+Given a school grade such as C<2> above, and the return value of
+L</parse_kanjidic>, C<$kanjidic_ref>, return an array reference
+containing a list of all of the kanji from that grade. [%
+faqwhat("education", "How is Japanese writing taught to Japanese
+children?", "details of the Japanese education system") %]
 
-This function assumes that the kanjidic file is encoded using the
-EUC-JP encoding.
+The following example prints a list of the kanji from each school
+grade to standard output:
+
+[% example("grades") %]
+
+=head2 grade_stroke_order
+
+This is like L</kanji_dictionary_order> and
+L</stroke_radical_jis_order>, except it sorts the kanji by school
+grade, then by stroke number, then by JIS number.
+
+This function is used to make this [% faq("grade-list","List of kanji
+by elementary school grade") %].
+
+=head2 kanji_dictionary_order
+
+    my @sorted = sort {kanji_dictionary_order ($kanjidic_ref, $a, $b)} @kanji;
+
+This is a comparision function which puts kanji in the order they
+would be found in a Japanese kanji dictionary. Elements are sorted by
+the value of the L</radical> field, then by the first stroke count
+value (the first entry of the L</S> field) if they both have the same
+radical. Elements with the same stroke count and radical are finally
+sorted in order of their JIS code value.
+
+This also adds a new field "kanji_id" to each element of
+C<$kanjidic_ref> so that the order can be reconstructed when referring
+to elements.
+
+[% faqwhat("using-a-kanji-dictionary", "How is a kanji dictionary
+used?", "kanji dictionary ordering") %] [% faqwhat("radicals", "What
+are kanji radicals?", "kanji radicals") %]
+
+=head2 kanjidic_order
+
+    my @order = kanjidic_order ($k);
+
+This returns a list of the keys of C<$k> sorted by their JIS code
+number, which is the ordering used by the Kanjidic file itself.
 
 =head2 parse_entry
 
@@ -76,7 +112,7 @@ The kanji itself (the same as the key).
 
 The JIS code for the kanji in hexadecimal. This is a two-byte number
 which identifies the kanji in the L<JIS X 0208 encoding
-scheme|http://www.sljfaq.org/afaq/encodings.html#encodings-JIS-X-0208>. The
+scheme|https://www.sljfaq.org/afaq/encodings.html#encodings-JIS-X-0208>. The
 JIS value is the second value in Kanjidic after the kanji in encoded
 form and before the Unicode code point.
 
@@ -206,31 +242,19 @@ For example, to print all the existing values,
 For detailed explanations of these codes, see the kanjidic
 documentation, which is linked to under L</About Kanjidic>.
 
-=head2 kanjidic_order
+=head2 parse_kanjidic
 
-    my @order = kanjidic_order ($k);
+[% example("parse-kanjidic") %]
 
-This returns a list of the keys of C<$k> sorted by their JIS code
-number, which is the ordering used by the Kanjidic file itself.
+The input is the file name where Kanjidic may be found. The return
+value is a hash reference. The keys of this hash reference are kanji,
+encoded as Unicode. Each of the values of the hash reference are
+entries corresponding to the kanji in the keys. Each value represents
+one line of Kanjidic. Each is a hash reference, with the keys
+described in L</parse_entry>.
 
-=head2 kanji_dictionary_order
-
-    my @sorted = sort {kanji_dictionary_order ($kanjidic_ref, $a, $b)} @kanji;
-
-This is a comparision function which puts kanji in the order they
-would be found in a Japanese kanji dictionary. Elements are sorted by
-the value of the L</radical> field, then by the first stroke count
-value (the first entry of the L</S> field) if they both have the same
-radical. Elements with the same stroke count and radical are finally
-sorted in order of their JIS code value.
-
-This also adds a new field "kanji_id" to each element of
-C<$kanjidic_ref> so that the order can be reconstructed when referring
-to elements.
-
-[% faqwhat("using-a-kanji-dictionary", "How is a kanji dictionary
-used?", "kanji dictionary ordering") %] [% faqwhat("radicals", "What
-are kanji radicals?", "kanji radicals") %]
+This function assumes that the kanjidic file is encoded using the
+EUC-JP encoding.
 
 =head2 stroke_radical_jis_order
 
@@ -241,30 +265,6 @@ according to stroke count, the L</S> field. If the stroke count is
 identical, it sorts them according to L</radical>. If both the stroke
 count and radical are the same, it sorts them according to
 L</jiscode>.
-
-=head2 grade_stroke_order
-
-This is like L</kanji_dictionary_order> and
-L</stroke_radical_jis_order>, except it sorts the kanji by school
-grade, then by stroke number, then by JIS number.
-
-This function is used to make this [% faq("grade-list","List of kanji
-by elementary school grade") %].
-
-=head2 grade
-
-    my $grade2 = grade ($kanjidic_ref, 2);
-
-Given a school grade such as C<2> above, and the return value of
-L</parse_kanjidic>, C<$kanjidic_ref>, return an array reference
-containing a list of all of the kanji from that grade. [%
-faqwhat("education", "How is Japanese writing taught to Japanese
-children?", "details of the Japanese education system") %]
-
-The following example prints a list of the kanji from each school
-grade to standard output:
-
-[% example("grades") %]
 
 =head1 SEE ALSO
 
@@ -293,27 +293,12 @@ format of kanjidic.
 
 =item Documentation
 
-The following links point to the documentation of Kanjidic.
-
-=over
-
-=item L<Summary description of kanjidic|http://www.edrdg.org/kanjidic/kanjidic.html>
-
-=item L<Full documentation|http://www.edrdg.org/kanjidic/kanjidic_doc.html>
-
-=back
+The documentation of Kanjidic is at L<http://www.edrdg.org/wiki/index.php/KANJIDIC_Project>
 
 =item Download
 
-Download the F<kanjidic> file at one of the following sites:
-
-=over
-
-=item L<ftp://ftp.edrdg.org/pub/Nihongo/00INDEX.html>
-
-=item L<http://ftp.monash.edu.au/pub/nihongo/00INDEX.html>
-
-=back
+Download the F<kanjidic> file from the links at
+L<http://www.edrdg.org/wiki/index.php/KANJIDIC_Project#Introduction>
 
 =item Licence
 

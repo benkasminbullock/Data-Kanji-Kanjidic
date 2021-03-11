@@ -1,0 +1,164 @@
+[
+	{
+		"files":[
+			"/usr/home/ben/projects/data-kanji-kanjidic/lib/Data/Kanji/Kanjidic.pod"
+		],
+		"link":"http://www.edrdg.org/",
+		"status":"200 OK"
+	},
+	{
+		"files":[
+			"/usr/home/ben/projects/data-kanji-kanjidic/lib/Data/Kanji/Kanjidic.pod"
+		],
+		"link":"http://www.edrdg.org/edrdg/licence.html",
+		"status":"200 OK"
+	},
+	{
+		"files":[
+			"/usr/home/ben/projects/data-kanji-kanjidic/lib/Data/Kanji/Kanjidic.pod"
+		],
+		"link":"http://www.edrdg.org/kanjidic/kanjidic.html",
+		"status":"200 OK"
+	},
+	{
+		"files":[
+			"/usr/home/ben/projects/data-kanji-kanjidic/lib/Data/Kanji/Kanjidic.pod"
+		],
+		"link":"http://www.edrdg.org/kanjidic/kanjidic_doc.html",
+		"status":"200 OK"
+	},
+	{
+		"files":[
+			"/usr/home/ben/projects/data-kanji-kanjidic/lib/Data/Kanji/Kanjidic.pod"
+		],
+		"link":"http://www.edrdg.org/wiki/index.php/KANJIDIC_Project#Introduction",
+		"status":"200 OK"
+	},
+	{
+		"files":[
+			"/usr/home/ben/projects/data-kanji-kanjidic/lib/Data/Kanji/Kanjidic.pod"
+		],
+		"link":"http://www.sljfaq.org/afaq/encodings.html#encodings-JIS-X-0208",
+		"location":"https://www.sljfaq.org/afaq/encodings.html",
+		"status":"301 Moved Permanently"
+	},
+	{
+		"files":[
+			"/usr/home/ben/projects/data-kanji-kanjidic/lib/Data/Kanji/Kanjidic.pod"
+		],
+		"link":"https://fastapi.metacpan.org/source/BKB/Data-Kanji-Kanjidic-0.16/examples/english-to-kanji.pl",
+		"status":"200 OK"
+	},
+	{
+		"files":[
+			"/usr/home/ben/projects/data-kanji-kanjidic/lib/Data/Kanji/Kanjidic.pod"
+		],
+		"link":"https://fastapi.metacpan.org/source/BKB/Data-Kanji-Kanjidic-0.16/examples/example.pl",
+		"status":"200 OK"
+	},
+	{
+		"files":[
+			"/usr/home/ben/projects/data-kanji-kanjidic/lib/Data/Kanji/Kanjidic.pod"
+		],
+		"link":"https://fastapi.metacpan.org/source/BKB/Data-Kanji-Kanjidic-0.16/examples/frequency.pl",
+		"status":"200 OK"
+	},
+	{
+		"files":[
+			"/usr/home/ben/projects/data-kanji-kanjidic/lib/Data/Kanji/Kanjidic.pod"
+		],
+		"link":"https://fastapi.metacpan.org/source/BKB/Data-Kanji-Kanjidic-0.16/examples/grades.pl",
+		"status":"200 OK"
+	},
+	{
+		"files":[
+			"/usr/home/ben/projects/data-kanji-kanjidic/lib/Data/Kanji/Kanjidic.pod"
+		],
+		"link":"https://fastapi.metacpan.org/source/BKB/Data-Kanji-Kanjidic-0.16/examples/korean.pl",
+		"status":"200 OK"
+	},
+	{
+		"files":[
+			"/usr/home/ben/projects/data-kanji-kanjidic/lib/Data/Kanji/Kanjidic.pod"
+		],
+		"link":"https://fastapi.metacpan.org/source/BKB/Data-Kanji-Kanjidic-0.16/examples/morohashi.pl",
+		"status":"200 OK"
+	},
+	{
+		"files":[
+			"/usr/home/ben/projects/data-kanji-kanjidic/lib/Data/Kanji/Kanjidic.pod"
+		],
+		"link":"https://fastapi.metacpan.org/source/BKB/Data-Kanji-Kanjidic-0.16/examples/onyomi-same.pl",
+		"status":"200 OK"
+	},
+	{
+		"files":[
+			"/usr/home/ben/projects/data-kanji-kanjidic/lib/Data/Kanji/Kanjidic.pod"
+		],
+		"link":"https://fastapi.metacpan.org/source/BKB/Data-Kanji-Kanjidic-0.16/examples/parse-kanjidic.pl",
+		"status":"200 OK"
+	},
+	{
+		"files":[
+			"/usr/home/ben/projects/data-kanji-kanjidic/lib/Data/Kanji/Kanjidic.pod"
+		],
+		"link":"https://github.com/benkasminbullock/Data-Kanji-Kanjidic/commit/27e334e3ee1a526d5690234eae5a9cbe1d48f0bb",
+		"status":"200 OK"
+	},
+	{
+		"files":[
+			"/usr/home/ben/projects/data-kanji-kanjidic/lib/Data/Kanji/Kanjidic.pod"
+		],
+		"link":"https://www.sljfaq.org/afaq/education.html",
+		"status":"200 OK"
+	},
+	{
+		"files":[
+			"/usr/home/ben/projects/data-kanji-kanjidic/lib/Data/Kanji/Kanjidic.pod"
+		],
+		"link":"https://www.sljfaq.org/afaq/grade-list.html",
+		"status":"200 OK"
+	},
+	{
+		"files":[
+			"/usr/home/ben/projects/data-kanji-kanjidic/lib/Data/Kanji/Kanjidic.pod"
+		],
+		"link":"https://www.sljfaq.org/afaq/jinmeiyou-kanji.html",
+		"status":"200 OK"
+	},
+	{
+		"files":[
+			"/usr/home/ben/projects/data-kanji-kanjidic/lib/Data/Kanji/Kanjidic.pod"
+		],
+		"link":"https://www.sljfaq.org/afaq/jouyou-kanji.html",
+		"status":"200 OK"
+	},
+	{
+		"files":[
+			"/usr/home/ben/projects/data-kanji-kanjidic/lib/Data/Kanji/Kanjidic.pod"
+		],
+		"link":"https://www.sljfaq.org/afaq/kanji-pronunciation.html",
+		"status":"200 OK"
+	},
+	{
+		"files":[
+			"/usr/home/ben/projects/data-kanji-kanjidic/lib/Data/Kanji/Kanjidic.pod"
+		],
+		"link":"https://www.sljfaq.org/afaq/kokuji.html",
+		"status":"200 OK"
+	},
+	{
+		"files":[
+			"/usr/home/ben/projects/data-kanji-kanjidic/lib/Data/Kanji/Kanjidic.pod"
+		],
+		"link":"https://www.sljfaq.org/afaq/radicals.html",
+		"status":"200 OK"
+	},
+	{
+		"files":[
+			"/usr/home/ben/projects/data-kanji-kanjidic/lib/Data/Kanji/Kanjidic.pod"
+		],
+		"link":"https://www.sljfaq.org/afaq/using-a-kanji-dictionary.html",
+		"status":"200 OK"
+	}
+]
