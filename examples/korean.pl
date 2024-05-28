@@ -5,8 +5,8 @@ my $kanji = parse_kanjidic ($ARGV[0]);
 for my $k (sort keys %$kanji) {
     my $w = $kanji->{$k}->{W};
     if ($w) {
-        my @h = map {'"' . hangul2roman ($_) . '"'} @$w;
-        my @ha = map {'"' . roman2hangul ($_) . '"'} @$w;
+        my @h = map {'"' . roman2hangul ($_) . '"'} @$w;
+        my @ha = map {'"' . hangul2roman ($_) . '"'} @$w;
         print "$k is Korean ", join (", ", @h), ' - ' , join (", ", @ha) , "\n";
     }
 }
